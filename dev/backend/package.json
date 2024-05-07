@@ -1,0 +1,32 @@
+{
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "deep-email-validator": "^0.1.21",
+    "dotenv": "^16.4.5",
+    "email-existence": "^0.1.6",
+    "email-validator": "^2.0.4",
+    "email-verifier": "^0.4.1",
+    "express": "^4.19.1",
+    "express-fileupload": "^1.5.0",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.9.2",
+    "nodemailer": "^6.9.13",
+    "path": "^0.12.7",
+    "sequelize": "^6.37.1",
+    "stripe": "^14.22.0",
+    "uuid": "^9.0.1",
+    "zxcvbn": "^4.4.2"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
