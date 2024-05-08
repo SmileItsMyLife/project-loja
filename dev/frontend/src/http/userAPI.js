@@ -57,13 +57,14 @@ export const login = async (email, password) => {
 };
 
 export const check = async () => {
-    await $authHost.get('api/users/auth').then(response => {
-        console.log(response)
-    })
-    if (res.status == 401){
-        return res.status
-    } else {
+    try {
+        const { data } = await $authHost.get('api/users/auth')
         localStorage.setItem('token', data.token)
-        return jwtDecode(res.data.token)
+        return jwtDecode(data.token)
+    } catch (error) {
+        if (error.response) {
+            console.error('Error response status:', error.response.status);
+            return error.response.status
+        }
     }
 }

@@ -27,14 +27,15 @@ const App = observer(() => {
                 const token = localStorage.getItem('token');
                 if (token) {
                     const userData = await check();
-                    user.setEmail(userData.email);
-                    user.setId(userData.id);
-                    user.setIsAuth(true);
-                    user.setRole(userData.role);
-                    user.setIsVerified(userData.verified);
-                    const basketData = await fetchBasket();
-                    product.setBasket(basketData);
-                    setDataLoaded(true);
+                    if (userData != 401){
+                        user.setEmail(userData.email);
+                        user.setId(userData.id);
+                        user.setIsAuth(true);
+                        user.setRole(userData.role);
+                        user.setIsVerified(userData.verified);
+                        const basketData = await fetchBasket();
+                        product.setBasket(basketData);
+                    }
                 }
                 setDataLoaded(true);
             } catch (error) {
