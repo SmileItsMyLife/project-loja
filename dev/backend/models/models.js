@@ -43,15 +43,41 @@ const Comment = sequelize.define("comment", {
     body: {type: DataTypes.STRING}
 })
 
+const Purchase = sequelize.define("purchase", {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    date: {type: DataTypes.DATE },
+    value: {type: DataTypes.DOUBLE, allowNull: false},
+    status: {type: DataTypes.STRING}
+})
+
+const History = sequelize.define('history', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+})
+
+const HistoryProduct = sequelize.define('history_product', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+})
+
+Product.hasMany(Purchase)
+Purchase.belongsTo(Product)
 
 User.hasOne(Basket)
 Basket.belongsTo(User)
+
+User.hasOne(History)
+History.belongsTo(User)
+
+User.hasMany(Purchase)
+Purchase.belongsTo(User)
 
 User.hasMany(Rating)
 Rating.belongsTo(User)
 
 Basket.hasMany(BasketProduct)
 BasketProduct.belongsTo(Basket)
+
+History.hasMany(HistoryProduct)
+HistoryProduct.belongsTo(History)
 
 Type.hasMany(Product)
 Product.belongsTo(Type)
@@ -71,10 +97,12 @@ Comment.belongsTo(User)
 module.exports = {
     User,
     Basket,
+    History,
+    HistoryProduct,
     BasketProduct,
     Product,
     Type,
     Rating,
     Comment,
-    Request
+    Purchase
 }
