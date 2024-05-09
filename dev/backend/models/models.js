@@ -43,6 +43,11 @@ const Comment = sequelize.define("comment", {
     body: {type: DataTypes.STRING}
 })
 
+const Message = sequelize.define("message", {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    body: {type: DataTypes.STRING}
+})
+
 const Purchase = sequelize.define("purchase", {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     date: {type: DataTypes.DATE },
@@ -57,6 +62,9 @@ const History = sequelize.define('history', {
 const HistoryProduct = sequelize.define('history_product', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
 })
+
+User.hasMany(Message)
+Message.belongsTo(User)
 
 Product.hasMany(Purchase)
 Purchase.belongsTo(Product)
@@ -87,6 +95,9 @@ Rating.belongsTo(Product)
 
 Product.hasMany(BasketProduct)
 BasketProduct.belongsTo(Product)
+
+Purchase.hasOne(HistoryProduct)
+HistoryProduct.belongsTo(Purchase)
 
 Product.hasMany(Comment)
 Comment.belongsTo(Product)

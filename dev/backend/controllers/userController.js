@@ -53,6 +53,7 @@ class UserController {
 
             // Criar a cesta de compras para o usuário
             await Basket.create({ userId: user.id });
+            await History.create({ userId: user.id });
 
             // Enviar o e-mail de verificação
             await sendVerificationEmail(email, `http://localhost:5000/api/users/verificate?token=${verificationToken}`);
