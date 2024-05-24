@@ -18,6 +18,10 @@ const AccountCard = observer(() => {
         localStorage.removeItem('token');
     };
 
+    const purchaseMake = () => {
+        
+    }
+
     return (
         <Card className='shadow my-5'>
             <Card.Header>Conta</Card.Header>
@@ -26,9 +30,14 @@ const AccountCard = observer(() => {
                 <Card.Text>
                     {user.email}
                 </Card.Text>
+                <Card.Text>
+                    {"Foi verificado? -> " + user.isVerified}
+                </Card.Text>
                 <Link to="/" onClick={handleLogout}>
                     <Button variant="danger">Log out</Button>
                 </Link>
+                <Button onClick={purchaseMake} variant="danger">Pagar a caixa</Button>
+
             </Card.Body>
         </Card>
     );

@@ -35,9 +35,9 @@ const App = observer(() => {
                         user.setIsVerified(userData.verified);
                         const basketData = await fetchBasket();
                         product.setBasket(basketData);
+                        setDataLoaded(true);
                     }
                 }
-                setDataLoaded(true);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

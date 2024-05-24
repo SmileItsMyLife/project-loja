@@ -12,7 +12,7 @@ import Pagination from 'react-bootstrap/Pagination';
 import { fetchProducts, fetchTypes } from '../http/productAPI';
 
 export const Shop = observer(() => {
-    const { user, product } = useContext(Context)
+    const { user, product  } = useContext(Context)
 
     const [data, setData] = useState({
         typeId: 0,
@@ -31,17 +31,8 @@ export const Shop = observer(() => {
             })
         }
         fetchData()
-    }, [])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            await fetchProducts(data.typeId, data.page, data.limit).then((data) => {
-                product.setProducts(data)
-            })
-
-        }
-        fetchData()
     }, [data])
+    
     const handleTypeChange = (e) => {
         setData({
             ...data,

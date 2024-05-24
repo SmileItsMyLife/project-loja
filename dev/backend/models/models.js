@@ -48,35 +48,28 @@ const Message = sequelize.define("message", {
     body: {type: DataTypes.STRING}
 })
 
-const Purchase = sequelize.define("purchase", {
+const PurchaseBasket = sequelize.define("purchaseBasket", {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    date: {type: DataTypes.DATE },
-    value: {type: DataTypes.DOUBLE, allowNull: false},
-    status: {type: DataTypes.STRING}
+    date: {type: DataTypes.DATE, allowNull: true },
+    totalPrice: {type: DataTypes.DOUBLE, allowNull: true},
+    status: {type: DataTypes.STRING, allowNull: true}
 })
 
-const History = sequelize.define('history', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-})
-
-const HistoryProduct = sequelize.define('history_product', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+const PurchaseProduct = sequelize.define("purchaseProduct", {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true}
 })
 
 User.hasMany(Message)
 Message.belongsTo(User)
 
-Product.hasMany(Purchase)
-Purchase.belongsTo(Product)
+Product.hasMany(PurchaseProduct)
+PurchaseProduct.belongsTo(Product)
 
 User.hasOne(Basket)
 Basket.belongsTo(User)
 
-User.hasOne(History)
-History.belongsTo(User)
-
-User.hasMany(Purchase)
-Purchase.belongsTo(User)
+User.hasMany(PurchaseBasket)
+PurchaseBasket.belongsTo(User)
 
 User.hasMany(Rating)
 Rating.belongsTo(User)
@@ -84,8 +77,8 @@ Rating.belongsTo(User)
 Basket.hasMany(BasketProduct)
 BasketProduct.belongsTo(Basket)
 
-History.hasMany(HistoryProduct)
-HistoryProduct.belongsTo(History)
+PurchaseBasket.hasMany(PurchaseProduct)
+PurchaseProduct.belongsTo(PurchaseBasket)
 
 Type.hasMany(Product)
 Product.belongsTo(Type)
@@ -96,8 +89,8 @@ Rating.belongsTo(Product)
 Product.hasMany(BasketProduct)
 BasketProduct.belongsTo(Product)
 
-Purchase.hasOne(HistoryProduct)
-HistoryProduct.belongsTo(Purchase)
+Product.hasMany(PurchaseProduct)
+PurchaseProduct.belongsTo(Product)
 
 Product.hasMany(Comment)
 Comment.belongsTo(Product)
@@ -108,12 +101,11 @@ Comment.belongsTo(User)
 module.exports = {
     User,
     Basket,
-    History,
-    HistoryProduct,
+    PurchaseProduct,
     BasketProduct,
     Product,
     Type,
     Rating,
     Comment,
-    Purchase
+    PurchaseBasket
 }

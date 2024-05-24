@@ -100,6 +100,36 @@ export const Admin = observer(() => {
           ))}
         </Table>
       </Container>
+
+      <Container>
+        <CreateProduct fetchData={fetchData}/>
+        <Table striped bordered hover size="sm" className='my-5'>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Nome</th>
+              <th>Preço</th>
+              <th>Descrição</th>
+              <th>Tipo</th>
+              <th>Imagem</th>
+            </tr>
+          </thead>
+          {product.products.rows && product.products.rows.map((object) => (
+            <tbody key={object.id}>
+              <tr>
+                <td><Form.Control name="formId" type="number" defaultValue={object.id} disabled /></td>
+                <td><Form.Control name="name" type="text" defaultValue={object.name} /></td>
+                <td><Form.Control name="price" type="number" defaultValue={object.price} /></td>
+                <td><Form.Control name="info" type="text" defaultValue={object.info} /></td>
+                <td><Form.Control name="typeId" type="number" defaultValue={object.typeId} /></td>
+                <td><Form.Control name="img" type="file" /></td>
+                <td><Form.Control type="button" onClick={() => handleUpdateProduct(object)} defaultValue={"Atualizar"} /></td>
+                <td><Form.Control type="button" onClick={() => handleDeleteProduct(object.id)} defaultValue={"Apagar"} /></td>
+              </tr>
+            </tbody>
+          ))}
+        </Table>
+      </Container>
     </>
   );
 });
