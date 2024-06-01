@@ -10,10 +10,12 @@ const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 const router = require('./routes/index')
 const cron = require('node-cron');
 const { Op } = require('sequelize');
+const Stripe = require('stripe');
 
 const PORT = process.env.PORT || 5000
 
 const app = express() //Criação do objeto.
+const stripe = new Stripe('ваш секретний ключ');
 app.use(cors()) //Comunicação com browsers.
 app.use(express.json()) //Utilização do JSON formato.
 app.use(fileUpload({})) //Receio dos ficheiros.
