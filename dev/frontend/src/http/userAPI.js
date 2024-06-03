@@ -1,70 +1,82 @@
 import { $authHost, $host } from "./index";
 import { jwtDecode } from "jwt-decode";
 
+// Função de registro de usuário
 export const registration = async (email, password) => {
     try {
+        // Verifica se o email e a senha foram fornecidos
         if (!email || !password) {
             throw new Error('Email and password are required');
         }
+        // Envia uma solicitação POST para o endpoint de registro
         const res = await $host.post('api/users/registration', { email, password });
         if (res.status === 200) {
+            // Armazena o token JWT no localStorage
             localStorage.setItem('token', res.data.token);
-            return jwtDecode(res.data.token); // Return decoded JWT token
+            return jwtDecode(res.data.token); // Retorna o token JWT decodificado
         }
-        // Handle other successful responses if necessary
+        // Trata outras respostas de sucesso, se necessário
     } catch (error) {
-        // Handle errors
+        // Trata erros
         if (error.response) {
-            // Request was made and server responded with a status code that falls out of the range of 2xx
+            // A solicitação foi feita e o servidor respondeu com um status fora do intervalo 2xx
             console.error('Error response status:', error.response.status);
-            return error.response.status; // Return status code of error
+            return error.response.status; // Retorna o código de status do erro
         } else if (error.request) {
-            // The request was made but no response was received
+            // A solicitação foi feita, mas nenhuma resposta foi recebida
             console.error('No response received');
-            return 500; // Return a generic error status code
+            return 500; // Retorna um código de erro genérico
         } else {
-            // Something happened in setting up the request that triggered an error
+            // Algo deu errado na configuração da solicitação que desencadeou um erro
             console.error('Request setup error:', error.message);
-            return 500; // Return a generic error status code
+            return 500; // Retorna um código de erro genérico
         }
     }
 };
 
+// Função de login de usuário
 export const login = async (email, password) => {
     try {
+        // Verifica se o email e a senha foram fornecidos
         if (!email || !password) {
             throw new Error('Email and password are required');
         }
+        // Envia uma solicitação POST para o endpoint de login
         const { data } = await $host.post('api/users/login', { email, password });
+        // Armazena o token JWT no localStorage
         localStorage.setItem('token', data.token);
-        return jwtDecode(data.token); // Return decoded JWT token
+        return jwtDecode(data.token); // Retorna o token JWT decodificado
     } catch (error) {
-        // Handle errors
+        // Trata erros
         if (error.response) {
-            // Request was made and server responded with a status code that falls out of the range of 2xx
+            // A solicitação foi feita e o servidor respondeu com um status fora do intervalo 2xx
             console.error('Error response status:', error.response.status);
-            return error.response.status; // Return status code of error
+            return error.response.status; // Retorna o código de status do erro
         } else if (error.request) {
-            // The request was made but no response was received
+            // A solicitação foi feita, mas nenhuma resposta foi recebida
             console.error('No response received');
-            return 500; // Return a generic error status code
+            return 500; // Retorna um código de erro genérico
         } else {
-            // Something happened in setting up the request that triggered an error
+            // Algo deu errado na configuração da solicitação que desencadeou um erro
             console.error('Request setup error:', error.message);
-            return 500; // Return a generic error status code
+            return 500; // Retorna um código de erro genérico
         }
     }
 };
 
+// Função para verificar a autenticação do usuário
 export const check = async () => {
     try {
-        const { data } = await $authHost.get('api/users/auth')
-        localStorage.setItem('token', data.token)
-        return jwtDecode(data.token)
+        // Envia uma solicitação GET para o endpoint de verificação de autenticação
+        const { data } = await $authHost.get('api/users/auth');
+        // Armazena o token JWT no localStorage
+        localStorage.setItem('token', data.token);
+        return jwtDecode(data.token); // Retorna o token JWT decodificado
     } catch (error) {
+        // Trata erros
         if (error.response) {
             console.error('Error response status:', error.response.status);
-            return error.response.status
+            return error.response.status; // Retorna o código de status do erro
         }
     }
 }

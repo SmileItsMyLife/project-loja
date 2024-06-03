@@ -1,112 +1,146 @@
 const ApiError = require('../error/ApiError');
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const { User, Basket } = require('../models/models')
+// Importa a classe ApiError para tratamento de erros personalizados.
+
+const bcrypt = require('bcrypt');
+// Importa a biblioteca bcrypt para criptografar senhas.
+
+const jwt = require('jsonwebtoken');
+// Importa a biblioteca jsonwebtoken para gerar e verificar tokens JWT.
+
+const { User, Basket } = require('../models/models');
+// Importa os modelos User e Basket.
+
 const sendVerificationEmail = require('../services/mailService');
-const uuid = require("uuid")
-const EmailValidator = require('email-validator')
-const zxcvbn = require('zxcvbn')
-const sequelize = require("../db")
+// Importa o serviço para envio de e-mails de verificação.
+
+const uuid = require("uuid");
+// Importa a biblioteca uuid para gerar identificadores únicos.
+
+const EmailValidator = require('email-validator');
+// Importa a biblioteca para validação de e-mails.
+
+const zxcvbn = require('zxcvbn');
+// Importa a biblioteca para verificar a força da senha.
+
+const sequelize = require("../db");
+// Importa a configuração do Sequelize para conexão com o banco de dados.
+
 const cron = require('node-cron');
+// Importa a biblioteca node-cron para agendamento de tarefas cron.
 
 const generateJwt = (id, email, role, verified) => {
     return jwt.sign(
         { id, email, role, verified },
         process.env.SECRET_KEY,
         { expiresIn: '924h' }
-    )
-}
+    );
+};
+// Função para gerar um token JWT com base nas informações do usuário.
 
 class UserController {
     async registration(req, res, next) {
-        const t = await sequelize.transaction(); // Assuming sequelize is your ORM and you have access to it
+        const t = await sequelize.transaction();
+        // Inicia uma transação para garantir a integridade dos dados.
 
         try {
             const { email, password } = req.body;
 
-            // Verificar se o email e a senha foram fornecidos
             if (!email || !password) {
                 return next(ApiError.badRequest('Falta de email ou palavra-passe!'));
             }
+            // Verifica se o email e a senha foram fornecidos.
 
-            // Verificar se o email já está em uso
             const candidate = await User.findOne({ where: { email }, transaction: t });
             if (candidate) {
                 return next(ApiError.conflict('Utilizador com este email já existe!'));
             }
+            // Verifica se o email já está em uso.
 
-            // Validar o formato do email
             if (!EmailValidator.validate(email)) {
                 return next(ApiError.badRequest('Formato de e-mail inválido.'));
             }
+            // Valida o formato do email.
 
-            // Verificar a força da senha
             const passwordStrength = zxcvbn(password);
             if (passwordStrength.score < 3) {
                 return next(ApiError.badRequest('A senha é muito fraca.'));
             }
+            // Verifica a força da senha.
 
-            // Gerar token de verificação
             const verificationToken = uuid.v4();
+            // Gera um token de verificação.
 
-            // Criptografar a senha
             const hashPassword = await bcrypt.hash(password, 5);
+            // Criptografa a senha.
 
-            // Criar o usuário no banco de dados
             const user = await User.create({ email, password: hashPassword, verificationToken }, { transaction: t });
+            // Cria o usuário no banco de dados.
 
-            // Criar a cesta de compras para o usuário
             await Basket.create({ userId: user.id }, { transaction: t });
+            // Cria uma cesta de compras para o usuário.
 
-            // Enviar o e-mail de verificação
             await sendVerificationEmail(email, `http://localhost:5000/api/users/verificate?token=${verificationToken}`);
+            // Envia o e-mail de verificação.
 
-            // Gerar token JWT para o usuário
             const token = generateJwt(user.id, user.email, user.role, user.verified);
+            // Gera um token JWT para o usuário.
 
-            // Commit the transaction
             await t.commit();
+            // Confirma a transação.
 
-            // Retornar o token JWT como resposta
             return res.status(200).json({ token });
+            // Retorna o token JWT como resposta.
         } catch (error) {
-            // Rollback the transaction if an error occurs
             await t.rollback();
+            // Reverte a transação em caso de erro.
+
             console.log(error.message);
             return next(ApiError.internal("Erro durante o registro!"));
         }
     }
+
     async login(req, res, next) {
         try {
-            const { email, password } = req.body
-            // Verificar se o email e a senha foram fornecidos
+            const { email, password } = req.body;
+
             if (!email || !password) {
                 return next(ApiError.badRequest('Falta de email ou palavra-passe!'));
             }
-            const user = await User.findOne({ where: { email } })
-            if (!user) {
-                return next(ApiError.notFound('Utilizador não é encontrado!'))
-            }
+            // Verifica se o email e a senha foram fornecidos.
 
-            let comparePassword = bcrypt.compareSync(password, user.password)
-            if (!comparePassword) {
-                return next(ApiError.badRequest('Palavra-passe errado!'))
+            const user = await User.findOne({ where: { email } });
+            if (!user) {
+                return next(ApiError.notFound('Utilizador não é encontrado!'));
             }
+            // Verifica se o usuário existe.
+
+            const comparePassword = bcrypt.compareSync(password, user.password);
+            if (!comparePassword) {
+                return next(ApiError.badRequest('Palavra-passe errado!'));
+            }
+            // Verifica se a senha está correta.
+
             const token = generateJwt(user.id, user.email, user.role, user.verified);
+            // Gera um token JWT para o usuário.
+
             return res.status(200).json({ token });
+            // Retorna o token JWT como resposta.
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
             return next(ApiError.internal("Erro no login!"));
         }
     }
 
     async check(req, res, next) {
         try {
-            const user = await User.findByPk(req.user.id)
-            const token = generateJwt(user.id, user.email, user.role, user.verified)
+            const user = await User.findByPk(req.user.id);
+            const token = generateJwt(user.id, user.email, user.role, user.verified);
+            // Gera um novo token JWT para o usuário autenticado.
+
             return res.status(200).json({ token });
+            // Retorna o token JWT como resposta.
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
             return next(ApiError.internal("Erro durante o autenificação!"));
         }
     }
@@ -114,8 +148,8 @@ class UserController {
     async verificate(req, res, next) {
         try {
             const { token } = req.query;
-            let titulo = "Email Verificado"
-            let corpo = "O seu endereço de correio eletrónico foi verificado com sucesso. Pode agora aceder a todas as funcionalidades do nosso serviço."
+            let titulo = "Email Verificado";
+            let corpo = "O seu endereço de correio eletrónico foi verificado com sucesso. Pode agora aceder a todas as funcionalidades do nosso serviço.";
 
             const htmlContent = `
             <!DOCTYPE html>
@@ -177,25 +211,29 @@ class UserController {
             </html>`;
 
             if (!token) {
-                titulo = "Erro durante de verificação"
-                corpo = "O token não foi encontrado"
+                titulo = "Erro durante de verificação";
+                corpo = "O token não foi encontrado";
                 return res.status(400).send(htmlContent);
             }
+            // Verifica se o token de verificação está presente.
+
             const user = await User.findOne({ where: { verificationToken: token } });
             if (!user) {
-                titulo = "Erro durante de verificação"
-                corpo = "É possivel que o a vossa conta já foi verificada"
+                titulo = "Erro durante de verificação";
+                corpo = "É possivel que o a vossa conta já foi verificada";
                 return res.status(400).send(htmlContent);
             }
+            // Verifica se o usuário com o token de verificação existe.
+
             if (user.verified) {
-                await user.update({ verified: true, verificationToken: null });
-                titulo = "Conta verificada!"
-                corpo = "A vossa conta já foi verificada!"
+                titulo = "Conta verificada!";
+                corpo = "A vossa conta já foi verificada!";
                 return res.status(400).send(htmlContent);
             }
+            // Verifica se o usuário já foi verificado.
+
             await user.update({ verified: true, verificationToken: null });
-
-
+            // Atualiza o status do usuário para verificado e remove o token de verificação.
 
             return res.status(200).send(htmlContent);
         } catch (error) {
@@ -204,66 +242,84 @@ class UserController {
         }
     }
 
-
     async resendEmail(req, res, next) {
         try {
-            const user = req.user
-            const search = User.findByPk(user.id)
+            const user = req.user;
+            const search = await User.findByPk(user.id);
             if (!search) {
-                next(ApiError.notFound("Utilizador não encontrado"))
+                next(ApiError.notFound("Utilizador não encontrado"));
             }
-            await sendVerificationEmail(email, `http://localhost:5000/api/users/verificate?token=${search.verificationToken}`);
-            return res.status(200).json({ message: "Email foi reenviado" })
+            // Verifica se o usuário existe.
+
+            await sendVerificationEmail(search.email, `http://localhost:5000/api/users/verificate?token=${search.verificationToken}`);
+            // Reenvia o e-mail de verificação.
+
+            return res.status(200).json({ message: "Email foi reenviado" });
         } catch (error) {
-            console.log(error.message)
-            return next(ApiError.internal("Erro no resend email"))
+            console.log(error.message);
+            return next(ApiError.internal("Erro no resend email"));
         }
     }
 
     async askResetPassword(req, res, next) {
         try {
-            const { email } = req.query
+            const { email } = req.query;
             if (!email) {
-                return next(ApiError.badRequest("O email não está indicado"))
+                return next(ApiError.badRequest("O email não está indicado"));
             }
-            const user = await User.findOne({ where: { email } })
-            if (!user) {
-                return next(ApiError.badRequest("O token errado"))
-            }
-            const resetPasswordToken = uuid.v4()
-            await user.update({ resetPasswordToken })
-            await sendVerificationEmail(email, `http://localhost:5173/new-password?token=${resetPasswordToken}`);
-            return res.status(200).json({ message: "Verifica o seu email" })
-        } catch (error) {
-            console.log(error.message)
-            return next(ApiError.internal("Erro no pedido de mudança de palavra-passe"))
-        }
+            // Verifica se o email foi fornecido.
 
+            const user = await User.findOne({ where: { email } });
+            if (!user) {
+                return next(ApiError.badRequest("O token errado"));
+            }
+            // Verifica se o usuário com o email fornecido existe.
+
+            const resetPasswordToken = uuid.v4();
+            await user.update({ resetPasswordToken });
+            // Gera um token de redefinição de senha e o atualiza no banco de dados.
+
+            await sendVerificationEmail(email, `http://localhost:5173/new-password?token=${resetPasswordToken}`);
+            // Envia o e-mail de redefinição de senha.
+
+            return res.status(200).json({ message: "Verifica o seu email" });
+        } catch (error) {
+            console.log(error.message);
+            return next(ApiError.internal("Erro no pedido de mudança de palavra-passe"));
+        }
     }
 
     async resetPassword(req, res, next) {
         try {
-            const { token, password } = req.body
+            const { token, password } = req.body;
             if (!token || !password) {
-                return next(ApiError.badRequest("O token ou/e palavra-passe não está/am indicado/s"))
+                return next(ApiError.badRequest("O token ou/e palavra-passe não está/am indicado/s"));
             }
-            const user = await User.findOne({ where: { resetPasswordToken: token } })
+            // Verifica se o token e a senha foram fornecidos.
+
+            const user = await User.findOne({ where: { resetPasswordToken: token } });
             if (!user) {
-                return next(ApiError.notFound("Token errado"))
+                return next(ApiError.notFound("Token errado"));
             }
-            // Verificar a força da senha
+            // Verifica se o usuário com o token de redefinição de senha existe.
+
             const passwordStrength = zxcvbn(password);
             if (passwordStrength.score < 3) {
                 return next(ApiError.badRequest('A senha é muito fraca.'));
             }
+            // Verifica a força da nova senha.
+
             const hashPassword = await bcrypt.hash(password, 5);
-            await user.update({ password: hashPassword })
-            return res.status(200).json({ message: "A palavra-passe foi mudada" })
+            await user.update({ password: hashPassword, resetPasswordToken: null });
+            // Atualiza a senha do usuário no banco de dados e remove o token de redefinição.
+
+            return res.status(200).json({ message: "A palavra-passe foi mudada" });
         } catch (error) {
-            console.log(error.message)
-            return next(ApiError.internal("Erro na mudança de palavra-passe"))
+            console.log(error.message);
+            return next(ApiError.internal("Erro na mudança de palavra-passe"));
         }
     }
 }
 
-module.exports = new UserController()
+module.exports = new UserController();
+// Exporta uma instância da classe UserController.
