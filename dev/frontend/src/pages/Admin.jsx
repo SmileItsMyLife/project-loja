@@ -1,10 +1,12 @@
 import {CreateProduct} from '../components/modals/CreateProduct';
+import {CreateType} from '../components/modals/CreateType';
 import Container from 'react-bootstrap/Container';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../main';
 import Table from 'react-bootstrap/Table';
-import { deleteProduct, fetchProducts, fetchTypes, updateProduct } from '../http/productAPI';
-import { useContext, useEffect, useState } from 'react';
+import { deleteType, fetchTypes} from '../http/typeAPI';
+import { deleteProduct, fetchProducts} from '../http/productAPI';
+import { useContext, useEffect, useState, updateProduct } from 'react';
 import Form from 'react-bootstrap/Form';
 
 
@@ -69,39 +71,41 @@ export const Admin = observer(() => {
     }
   };
 
+  const handleDeleteType= async (id) => {
+    try {
+      const response = await deleteType(id);
+      console.log('Produto apagado com sucesso:', response);
+      fetchData();
+    } catch (error) {
+      console.error('Erro ao apagar tipo:', error);
+      // Perform any error handling or display error messages
+    }
+  };
+
   return (
     <>
-      <Container>
-        <CreateProduct fetchData={fetchData}/>
+      <Container className='m-5'>
+        <CreateType fetchData={fetchData}/>
         <Table striped bordered hover size="sm" className='my-5'>
-          <thead>
+          <thead> 
             <tr>
               <th>Id</th>
               <th>Nome</th>
-              <th>Preço</th>
-              <th>Descrição</th>
-              <th>Tipo</th>
-              <th>Imagem</th>
             </tr>
           </thead>
-          {product.products.rows && product.products.rows.map((object) => (
+          {product.types && product.types.map((object) => (
             <tbody key={object.id}>
               <tr>
                 <td><Form.Control name="formId" type="number" defaultValue={object.id} disabled /></td>
-                <td><Form.Control name="name" type="text" defaultValue={object.name} /></td>
-                <td><Form.Control name="price" type="number" defaultValue={object.price} /></td>
-                <td><Form.Control name="info" type="text" defaultValue={object.info} /></td>
-                <td><Form.Control name="typeId" type="number" defaultValue={object.typeId} /></td>
-                <td><Form.Control name="img" type="file" /></td>
-                <td><Form.Control type="button" onClick={() => handleUpdateProduct(object)} defaultValue={"Atualizar"} /></td>
-                <td><Form.Control type="button" onClick={() => handleDeleteProduct(object.id)} defaultValue={"Apagar"} /></td>
+                <td><Form.Control name="name" type="text" defaultValue={object.name} disabled/></td>
+                <td><Form.Control type="button" onClick={() => handleDeleteType(object.id)} defaultValue={"Apagar"} /></td>
               </tr>
             </tbody>
           ))}
         </Table>
       </Container>
 
-      <Container>
+      <Container className='m-5'>
         <CreateProduct fetchData={fetchData}/>
         <Table striped bordered hover size="sm" className='my-5'>
           <thead>

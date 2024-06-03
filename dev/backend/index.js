@@ -33,6 +33,20 @@ async function deleteUnverifiedAccounts() {
                 createdAt: { [Op.lt]: tenMinutesAgo }
             }
         });
+
+        await models.Basket.destroy({
+            where: {
+                userId: null
+            }
+        });
+
+        await models.BasketProduct.destroy({
+            where: {
+                basketId: null
+            }
+        });
+
+        awai
         console.log('Unverified accounts older than 10 minutes have been deleted.');
     } catch (error) {
         console.error('Error deleting unverified accounts:', error);

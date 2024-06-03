@@ -67,8 +67,13 @@ class ProductController {
                 products = await Product.findAndCountAll({ where: { typeId }, limit, offset });
             }
 
+            const allProducts = await Product.findAll()
+
+            const totalPages = Math.ceil(allProducts.length / limit);
+
+
             // Retorna os produtos encontrados
-            return res.status(200).json(products);
+            return res.status(200).json({products, totalPages});
         } catch (error) {
             console.log(error.message)
             return next(ApiError.internal("Erro ao buscar produtos"));

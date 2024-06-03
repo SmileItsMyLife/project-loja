@@ -23,30 +23,36 @@ const App = observer(() => {
         const fetchData = async () => {
             try {
                 const typesData = await fetchTypes();
-                product.setTypes(typesData)
+                console.log('Types data:', typesData);
+                product.setTypes(typesData);
+
                 const token = localStorage.getItem('token');
                 if (token) {
                     const userData = await check();
-                    if (userData != 401){
+                    console.log('User data:', userData);
+                    if (userData != 400 && userData != 401 && userData != 403 && userData != 404 && userData!=500) {
                         user.setEmail(userData.email);
                         user.setId(userData.id);
                         user.setIsAuth(true);
                         user.setRole(userData.role);
                         user.setIsVerified(userData.verified);
+
                         const basketData = await fetchBasket();
+                        console.log('Basket data:', basketData);
                         product.setBasket(basketData);
-                        setDataLoaded(true);
                     }
                 }
+                setDataLoaded(true); // Ensure dataLoaded is set to true
             } catch (error) {
                 console.error('Error fetching data:', error);
+                setDataLoaded(true); // Set dataLoaded to true even if there's an error
             }
         };
         fetchData();
-    }, [user, product]);
+    }, []); // Use an empty dependency array to run only once
 
     if (!dataLoaded) {
-        return <div>Loading</div>; // Render the Loading component until data is loaded
+        return <div>Loading...</div>; // Render the Loading component until data is loaded
     }
 
     return (

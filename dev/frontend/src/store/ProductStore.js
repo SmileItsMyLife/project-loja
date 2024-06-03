@@ -8,11 +8,16 @@ export default class ProductStore {
         this._page = 1
         this._totalCount = 0
         this._limit = 3
+        this._totalPages = 1
         makeAutoObservable(this)
     }
 
     setBasket(basket) {
         this._basket = basket
+    }
+
+    setTotalPages(totalPages) {
+        this._totalPages = totalPages
     }
 
     setTypes(types) {
@@ -56,5 +61,9 @@ export default class ProductStore {
 
     get basket() {
         return this._basket
+    }
+
+    get totalPages() {
+        return this._totalPages
     }
 }
