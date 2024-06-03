@@ -11,7 +11,7 @@ const AccountCard = observer(() => {
         // Remover o token do armazenamento local
         user.setEmail("");
         user.setId(0);
-        user.setIsAuth(false);  
+        user.setIsAuth(false);
         user.setRole("GUEST");
         user.setIsVerified(false);
         product.setBasket([])
@@ -19,25 +19,26 @@ const AccountCard = observer(() => {
     };
 
     const purchaseMake = () => {
-        
+
     }
 
     return (
         <Card className='shadow my-5'>
-            <Card.Header>Conta</Card.Header>
+            <Card.Header className="bg-primary text-white">Conta</Card.Header>
             <Card.Body>
-                <Card.Title>{user.role}</Card.Title>
-                <Card.Text>
-                    {user.email}
+                <Card.Title className="text-muted mb-4">{user.role}</Card.Title>
+                <Card.Text className="mb-2">
+                    <strong>Email:</strong> {user.email}
                 </Card.Text>
-                <Card.Text>
-                    {"Foi verificado? -> " + user.isVerified}
+                <Card.Text className="mb-4">
+                    <strong>Verificado:</strong> {user.isVerified ? 'Sim' : 'Não'}
                 </Card.Text>
-                <Link to="/" onClick={handleLogout}>
-                    <Button variant="danger">Log out</Button>
-                </Link>
-                <Button onClick={purchaseMake} variant="danger">Pagar a caixa</Button>
-
+                <div className="d-flex justify-content-between">
+                    <Link to="/" onClick={handleLogout}>
+                        <Button variant="danger">Log out</Button>
+                    </Link>
+                    <Button onClick={purchaseMake} variant="success">Pagar a caixa</Button>
+                </div>
             </Card.Body>
         </Card>
     );

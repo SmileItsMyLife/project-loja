@@ -17,7 +17,6 @@ export const ProductCard = observer(({ properts }) => {
 
   const handleBuyClick = async () => {
     if (!user.isAuth) {
-
       navigate('auth');
     } else {
       await addProduct(properts.id).then(() => {
@@ -30,7 +29,7 @@ export const ProductCard = observer(({ properts }) => {
 
   return (
     <>
-        <Card style={{ width: '18rem' }} className='m-3 shadow' onClick={() => {navigate(`product?id=${properts.id}`)}}>
+        <Card style={{ width: '18rem' }} className='m-3 shadow' >
           <Card.Img variant="top" src={`http://localhost:5000/${properts.img}`} style={{ minHeight: '50%', maxHeight: '50%', objectFit: 'cover' }} />
           <Card.Body className="d-flex flex-column justify-content-between">
             <Card.Title>{properts.name}</Card.Title>
@@ -38,6 +37,7 @@ export const ProductCard = observer(({ properts }) => {
               {properts.info}
             </Card.Text>
             <Button className='' variant="primary" onClick={handleBuyClick}>Comprar</Button>
+            <Button className='' variant="primary" onClick={() => {navigate(`product?id=${properts.id}`)}}>Observar</Button>
           </Card.Body>
         </Card>
         <Modal show={showMessage} onHide={handleClose}>

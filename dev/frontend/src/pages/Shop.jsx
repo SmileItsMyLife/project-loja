@@ -60,7 +60,7 @@ export const Shop = observer(() => {
         <>
             <Container fluid>
                 <Row xs={1} sm={2}>
-                    <Col xs={12} sm={3} className='d-flex justify-content-center'>
+                    <Col xs={12} sm={3} className='d-flex justify-content-center border-end'>
                         <Container>
                             <Form>
                                 <Search />
@@ -70,9 +70,9 @@ export const Shop = observer(() => {
                                         <option key={type.id} value={type.id}>{type.name}</option>
                                     ))}
                                 </Form.Select>
-                                <Form.Select className="my-3 shadow">
-                                    {/* Options here */}
-                                </Form.Select>
+                                {/* <Form.Select className="my-3 shadow">
+                                    Options here
+                                </Form.Select> */}
                             </Form>
                         </Container>
                     </Col>
