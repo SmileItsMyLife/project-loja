@@ -1,23 +1,18 @@
 require("dotenv").config() 
 // Carrega as variáveis de ambiente do arquivo .env para process.env.
-
 const express = require("express") 
 // Importa o framework Express para criar o servidor.
-
 const fileUpload = require("express-fileupload") 
 // Middleware para lidar com uploads de arquivos.
-
 const cors = require("cors") 
 // Middleware para habilitar CORS (Cross-Origin Resource Sharing).
-
 const path = require("path") 
 // Módulo nativo do Node.js para manipulação de caminhos de arquivos e diretórios.
-
 const models = require("./models/models") 
 // Importa todos os modelos definidos no arquivo models.
-
 const { User } = require('./models/models') 
 // Importa o modelo User especificamente.
+const bodyParser = require('body-parser');
 
 const sequelize = require("./db") 
 // Importa a configuração do Sequelize para conexão com o banco de dados.
@@ -57,8 +52,34 @@ app.use(fileUpload({}))
 
 app.use(express.static(path.resolve(__dirname, "static"))) 
 // Middleware para servir arquivos estáticos da pasta "static".
+app.use(bodyParser.raw({ type: 'application/json' }));
+
 
 app.use('/api', router) 
+
+
+app.post('/create-checkout-session', async (req, res) => {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: 'Caixa de Pagamento',
+            },
+            unit_amount: 2000, // preço em centavos (20 USD)
+          },
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: `${req.headers.origin}/success`,
+      cancel_url: `${req.headers.origin}/cancel`,
+    });
+  
+    res.json({ id: session.id });
+  });
 // Usa o roteador principal para todas as rotas que começam com '/api'.
 
 app.use(errorHandler) 

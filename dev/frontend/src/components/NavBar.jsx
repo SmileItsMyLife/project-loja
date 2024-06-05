@@ -18,9 +18,6 @@ export const NavBar = observer(() => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         <Link to="/" className={location.pathname == "/" ? "active nav-link" : "nav-link"} >Loja</Link>
-                        <Link to="#features" className="nav-link">Notícias</Link>
-                        <Link to="#features" className="nav-link">Sobre</Link>
-                        <Link to="#features" className="nav-link">Contactos</Link>
                         {user.role === "ADMIN" ? <Link to="admin" className={location.pathname == "/admin" ? "active nav-link" : "nav-link"}>Admin Painel</Link> : null}
                     </Nav>
                     <Nav>

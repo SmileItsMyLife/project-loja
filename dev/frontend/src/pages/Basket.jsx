@@ -29,9 +29,9 @@ export const Basket = observer(() => {
     return (
         <>
             <Container>
-                <AccountCard />
+                
                 <Elements stripe={stripePromise}>
-                    <CheckoutForm/>
+                    <AccountCard />
                 </Elements>
                 <Container fluid>
                     <Row xs={1} sm={2} md={3} lg={3} xl={4} className="justify-content-center">

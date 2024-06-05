@@ -1,11 +1,11 @@
-import {CreateProduct} from '../components/modals/CreateProduct';
-import {CreateType} from '../components/modals/CreateType';
+import { CreateProduct } from '../components/modals/CreateProduct';
+import { CreateType } from '../components/modals/CreateType';
 import Container from 'react-bootstrap/Container';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../main';
 import Table from 'react-bootstrap/Table';
-import { deleteType, fetchTypes} from '../http/typeAPI';
-import { deleteProduct, fetchProducts} from '../http/productAPI';
+import { deleteType, fetchTypes } from '../http/typeAPI';
+import { deleteProduct, fetchProducts } from '../http/productAPI';
 import { useContext, useEffect, useState, updateProduct } from 'react';
 import Form from 'react-bootstrap/Form';
 
@@ -18,20 +18,23 @@ export const Admin = observer(() => {
     page: 1,
     limit: 24,
   });
-
   const fetchData = async () => {
-    await fetchProducts(data.typeId, data.page, data.limit).then((data) => {
-      product.setProducts(data);
-    });
-
     await fetchTypes().then((data) => {
       product.setTypes(data);
+    });
+
+    await fetchProducts(data.typeId, data.page, data.limit).then((data) => {
+      product.setProducts(data.products);
+      console.log("Produtos: " + product.products.row)
+      product.setTotalPages(data.totalPages);
     });
   };
 
   useEffect(() => {
     fetchData();
   }, [data]);
+
+  console.log(product.products)
 
   const handleUpdateProduct = async (object) => {
     try {
@@ -71,7 +74,7 @@ export const Admin = observer(() => {
     }
   };
 
-  const handleDeleteType= async (id) => {
+  const handleDeleteType = async (id) => {
     try {
       const response = await deleteType(id);
       console.log('Produto apagado com sucesso:', response);
@@ -85,9 +88,9 @@ export const Admin = observer(() => {
   return (
     <>
       <Container className='m-5'>
-        <CreateType fetchData={fetchData}/>
+        <CreateType fetchData={fetchData} />
         <Table striped bordered hover size="sm" className='my-5'>
-          <thead> 
+          <thead>
             <tr>
               <th>Id</th>
               <th>Nome</th>
@@ -97,7 +100,7 @@ export const Admin = observer(() => {
             <tbody key={object.id}>
               <tr>
                 <td><Form.Control name="formId" type="number" defaultValue={object.id} disabled /></td>
-                <td><Form.Control name="name" type="text" defaultValue={object.name} disabled/></td>
+                <td><Form.Control name="name" type="text" defaultValue={object.name} disabled /></td>
                 <td><Form.Control type="button" onClick={() => handleDeleteType(object.id)} defaultValue={"Apagar"} /></td>
               </tr>
             </tbody>
@@ -106,7 +109,7 @@ export const Admin = observer(() => {
       </Container>
 
       <Container className='m-5'>
-        <CreateProduct fetchData={fetchData}/>
+        <CreateProduct fetchData={fetchData} />
         <Table striped bordered hover size="sm" className='my-5'>
           <thead>
             <tr>
