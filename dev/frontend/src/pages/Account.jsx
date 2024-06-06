@@ -22,7 +22,7 @@ export default function Account() {
     <Container>
       <AccountCard />
 
-      História das compras:
+      {/* História das compras:
       <HistoryList />
       <Container className='d-flex justify-content-center'>
         <Pagination>
@@ -30,7 +30,7 @@ export default function Account() {
           <Pagination.Item active>{data.page}</Pagination.Item>
           <Pagination.Next onClick={() => handlePageChange(data.page + 1)} />
         </Pagination>
-      </Container>
+      </Container> */}
 
       {/* Favoritos:
         <HistoryList/>

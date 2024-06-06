@@ -37,77 +37,76 @@ export default function Footer() {
             <MDBCol md="3" lg="4" xl="3" className='mx-auto mb-4'>
               <h6 className='text-uppercase fw-bold mb-4'>
                 <MDBIcon icon="gem" className="me-3" />
-                Company name
+                Tricô Shop
               </h6>
               <p>
-                Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet,
-                consectetur adipisicing elit.
+                Cria, Inspira-se, Imagina
               </p>
             </MDBCol>
 
             <MDBCol md="2" lg="2" xl="2" className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Products</h6>
+              <h6 className='text-uppercase fw-bold mb-4'>Produtos</h6>
               <p>
                 <a href='#!' className='text-reset'>
-                  Angular
+                  Roupa
                 </a>
               </p>
               <p>
                 <a href='#!' className='text-reset'>
-                  React
+                  Material
                 </a>
               </p>
               <p>
                 <a href='#!' className='text-reset'>
-                  Vue
+                  Instrumentos
                 </a>
               </p>
               <p>
                 <a href='#!' className='text-reset'>
-                  Laravel
+                  Brinhquedas
                 </a>
               </p>
             </MDBCol>
 
             <MDBCol md="3" lg="2" xl="2" className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Useful links</h6>
+              <h6 className='text-uppercase fw-bold mb-4'>Links úteis</h6>
               <p>
                 <a href='#!' className='text-reset'>
-                  Pricing
+                  Amazon
                 </a>
               </p>
               <p>
                 <a href='#!' className='text-reset'>
-                  Settings
+                  Trico Wiki
                 </a>
               </p>
               <p>
                 <a href='#!' className='text-reset'>
-                  Orders
+                  Pedidos
                 </a>
               </p>
               <p>
                 <a href='#!' className='text-reset'>
-                  Help
+                  Ajuda
                 </a>
               </p>
             </MDBCol>
 
             <MDBCol md="4" lg="3" xl="3" className='mx-auto mb-md-0 mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Contact</h6>
+              <h6 className='text-uppercase fw-bold mb-4'>Contactos</h6>
               <p>
                 <MDBIcon icon="home" className="me-2" />
-                New York, NY 10012, US
+                Portimão, 8500-511 LT 8A esq 3
               </p>
               <p>
                 <MDBIcon icon="envelope" className="me-3" />
-                info@example.com
+                anickijandrij@gmail.com
               </p>
               <p>
-                <MDBIcon icon="phone" className="me-3" /> + 01 234 567 88
+                <MDBIcon icon="phone" className="me-3" /> +351 920 409 069
               </p>
               <p>
-                <MDBIcon icon="print" className="me-3" /> + 01 234 567 89
+                <MDBIcon icon="print" className="me-3" /> +351 920 377 885
               </p>
             </MDBCol>
           </MDBRow>
@@ -115,10 +114,7 @@ export default function Footer() {
       </section>
 
       <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-        © 2021 Copyright:
-        <a className='text-reset fw-bold' href='https://mdbootstrap.com/'>
-          MDBootstrap.com
-        </a>
+        © 2024 Copyright:
       </div>
     </MDBFooter>
   );

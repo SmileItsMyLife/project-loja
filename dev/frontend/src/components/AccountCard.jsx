@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 
 const AccountCard = observer(() => {
     const { user, product } = useContext(Context)
+
     const handleLogout = () => {
         // Remover o token do armazenamento local
         user.setEmail("");
@@ -17,10 +18,6 @@ const AccountCard = observer(() => {
         product.setBasket([])
         localStorage.removeItem('token');
     };
-
-    const purchaseMake = () => {
-
-    }
 
     return (
         <Card className='shadow my-5'>
@@ -37,7 +34,13 @@ const AccountCard = observer(() => {
                     <Link to="/" onClick={handleLogout}>
                         <Button variant="danger">Log out</Button>
                     </Link>
-                    <Button onClick={purchaseMake} variant="success">Pagar a caixa</Button>
+
+                    <Link to="/">
+                        <Button variant="success" >
+                            Pagar a caixa
+                        </Button>
+                    </Link>
+                    {/* https://chatgpt.com/share/b6c77bb9-b6ea-4b52-a090-36f1a1618548 */}
                 </div>
             </Card.Body>
         </Card>
