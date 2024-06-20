@@ -35,11 +35,9 @@ const AccountCard = observer(() => {
                         <Button variant="danger">Log out</Button>
                     </Link>
 
-                    <Link to="/">
-                        <Button variant="success" >
-                            Pagar a caixa
-                        </Button>
-                    </Link>
+                    <form action="http://localhost:4242/create-checkout-session" method="POST">
+                        <button id="submit" role="link">Buy</button>
+                    </form>
                     {/* https://chatgpt.com/share/b6c77bb9-b6ea-4b52-a090-36f1a1618548 */}
                 </div>
             </Card.Body>

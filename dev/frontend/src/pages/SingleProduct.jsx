@@ -63,7 +63,7 @@ const SingleProduct = observer(() => {
             <Row>
                 <Col className="d-flex justify-content-center">
                     <Card xs={12} md={8} className='m-5'>
-                        <Card.Img variant="top" src={`http://localhost:5000/${data.img}`} />
+                        <Card.Img variant="top" src={`http://localhost:4242/${data.img}`} />
                         <Card.Body>
                             <Card.Title>{data.name}</Card.Title>
                             <Card.Text>

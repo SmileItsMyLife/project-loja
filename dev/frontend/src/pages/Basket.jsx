@@ -7,10 +7,6 @@ import Col from 'react-bootstrap/esm/Col';
 import { ProductCardBasket } from '../components/ProductCardBasket';
 import AccountCard from '../components/AccountCard';
 import { fetchBasket } from '../http/basketAPI';
-import CheckoutForm from '../components/CheckoutForm';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-const stripePromise = loadStripe('pk_test_51PG65IP2AtuSdCmXp0UMp6KsUttHLCH0YDvfu7iRksMyWvaaSnhqtrpQh2ocN9gBXwrhvvzVK3PvpnCZTOhMyckq00BubliwMp');
 
 export const Basket = observer(() => {
     const { user, product } = useContext(Context);
@@ -29,10 +25,8 @@ export const Basket = observer(() => {
     return (
         <>
             <Container>
-                
-                <Elements stripe={stripePromise}>
-                    <AccountCard />
-                </Elements>
+
+                <AccountCard />
                 <Container fluid>
                     <Row xs={1} sm={2} md={3} lg={3} xl={4} className="justify-content-center">
                         {product.basket.productsInBasket && product.basket.productsInBasket.map((object, index) => {

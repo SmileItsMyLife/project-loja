@@ -20,7 +20,7 @@ export const ProductCardBasket = observer(({ properts, id }) => {
   return (
     <>
       <Card style={{ width: '18rem' }} className='m-3 shadow '>
-        <Card.Img variant="top" src={`http://localhost:5000/${properts.img}`} style={{ minHeight: '50%', maxHeight: '50%', objectFit: 'cover' }} />
+        <Card.Img variant="top" src={`http://localhost:4242/${properts.img}`} style={{ minHeight: '50%', maxHeight: '50%', objectFit: 'cover' }} />
         <Card.Body className="d-flex flex-column justify-content-between">
           <Card.Title>{properts.name}</Card.Title>
           <Card.Text>

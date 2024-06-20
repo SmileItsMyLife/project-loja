@@ -64,6 +64,8 @@ export const CreateProduct = observer(({ fetchData }) => {
         }
     };
 
+    console.log(product.types)
+
     return (
         <>
             <Button variant="primary" onClick={handleShow}>
@@ -99,7 +101,7 @@ export const CreateProduct = observer(({ fetchData }) => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicPrice">
-                            <Form.Label>Preço:</Form.Label>
+                            <Form.Label>Preço (cents):</Form.Label>
                             <Form.Control
                                 type="number"
                                 placeholder="Digite o preço do produto"
@@ -109,14 +111,18 @@ export const CreateProduct = observer(({ fetchData }) => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicTypeId">
-                            <Form.Label>TipoId:</Form.Label>
-                            <Form.Control
-                                type="number"
-                                placeholder="Id do tipo"
+                            <Form.Label>Tipo:</Form.Label>
+                            <Form.Select
+                                className="my-3 shadow"
+                                placeholder="Tipo"
                                 name="typeId"
                                 value={formData.typeId}
-                                onChange={handleChange}
-                            />
+                                onChange={handleChange}>
+                                {product.types.map((type) => (
+                                    <option key={type.id} value={type.id}>{type.name}</option>
+                                ))}
+                            </Form.Select>
+                            <Form.Control/>
                         </Form.Group>
                         <Form.Group controlId="formFile" className="mb-3">
                             <Form.Label>Imagem do Produto:</Form.Label>
