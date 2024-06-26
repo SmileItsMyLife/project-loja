@@ -34,10 +34,10 @@ const AccountCard = observer(() => {
                     <Link to="/" onClick={handleLogout}>
                         <Button variant="danger">Log out</Button>
                     </Link>
-
-                    <form action="http://localhost:4242/create-checkout-session" method="POST">
-                        <button id="submit" role="link">Buy</button>
-                    </form>
+                    <Link to="/payment-data">
+                        <Button variant="link">Pay</Button>
+                    </Link>
+                    {/* */}
                     {/* https://chatgpt.com/share/b6c77bb9-b6ea-4b52-a090-36f1a1618548 */}
                 </div>
             </Card.Body>

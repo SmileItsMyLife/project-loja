@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../main';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import Slider from '../components/Slider';
 import { ProductCard } from '../components/ProductCard';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';

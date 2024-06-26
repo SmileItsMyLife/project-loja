@@ -50,9 +50,10 @@ const Message = sequelize.define("message", {
 
 const PurchaseBasket = sequelize.define("purchaseBasket", {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    date: {type: DataTypes.DATE, allowNull: true },
-    totalPrice: {type: DataTypes.DOUBLE, allowNull: true},
-    status: {type: DataTypes.STRING, allowNull: true}
+    totalPrice: {type: DataTypes.DOUBLE, allowNull: false},
+    status: {type: DataTypes.STRING, allowNull: false},
+    addresses: {type: DataTypes.STRING, allowNull: false},
+    index: {type: DataTypes.STRING, allowNull: false},
 })
 
 const PurchaseProduct = sequelize.define("purchaseProduct", {

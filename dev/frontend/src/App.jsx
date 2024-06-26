@@ -16,6 +16,7 @@ import { Admin } from './pages/Admin';
 import { fetchTypes } from './http/productAPI';
 import Success from './pages/Success';
 import Canceled from './pages/Canceled';
+import PaymentDataForm from './components/PaymentDataForm';
 
 const App = observer(() => {
     const { user, product } = useContext(Context);
@@ -67,6 +68,7 @@ const App = observer(() => {
                 <Route path="/basket" element={<Basket />} />
                 <Route path="/account" element={<Account />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/payment-data" element={<PaymentDataForm />} />
                 <Route path="/success.html" element={<Success />} />
                 <Route path="/canceled.html" element={<Canceled />} />
             </Routes>
