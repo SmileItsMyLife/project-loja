@@ -1,57 +1,28 @@
 const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
 
-// Function to create a transport
-function createTransport(accessToken) {
-    return nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            type: 'OAuth2',
-            user: process.env.EMAIL,
-            clientId: process.env.CLIENT_ID,
-            clientSecret: process.env.CLIENT_SECRET,
-            refreshToken: process.env.REFRESH_TOKEN,
-            accessToken: accessToken,
-        },
-    });
-}
-
-// Function to get a new access token using the refresh token
-async function getAccessToken() {
-    const oAuth2Client = new google.auth.OAuth2(
-        process.env.CLIENT_ID,
-        process.env.CLIENT_SECRET,
-        'https://developers.google.com/oauthplayground' // Redirect URL
-    );
-
-    oAuth2Client.setCredentials({
-        refresh_token: process.env.REFRESH_TOKEN,
-    });
-
-    const tokenResponse = await oAuth2Client.getAccessToken();
-    if (!tokenResponse || !tokenResponse.token) {
-        throw new Error('Failed to get access token');
-    }
-    return tokenResponse.token;
-}
+// Configuração do transporte do Nodemailer
+const transporter = nodemailer.createTransport({
+    service: "gmail", // Pode ser alterado para outro serviço
+    auth: {
+        user: process.env.EMAIL_USER, // Seu e-mail (configurado no .env)
+        pass: process.env.EMAIL_PASS, // Sua senha ou senha de aplicativo
+    },
+});
 
 // Function to send a verification email
 module.exports = async function sendVerificationEmail(toEmail, verificationLink) {
     try {
-        const accessToken = await getAccessToken();
-        const transporter = createTransport(accessToken);
-
         const mailOptions = {
-            from: 'anickijandrij@gmail.com',
-            to: toEmail,
-            subject: 'Verificação de E-mail',
-            html: `<p>Por favor, clique no link abaixo para verificar seu endereço de e-mail:</p>
-                   <p><a href="${verificationLink}">${verificationLink}</a></p>`,
+            from: process.env.EMAIL_USER, // Remetente
+            to: toEmail, 
+            subject: "Verificação de Conta",
+            text: `Prima o link para confirmar o seu email: ${verificationLink}`,
         };
 
         const info = await transporter.sendMail(mailOptions);
-        console.log('E-mail de verificação enviado:', info.response);
+        console.log("E-mail enviado: ", info.messageId);
     } catch (error) {
-        console.error('Erro ao enviar e-mail:', error);
+        console.error("Erro ao enviar e-mail: ", error);
+        res.status(500).send("Erro ao enviar o e-mail.");
     }
 };
