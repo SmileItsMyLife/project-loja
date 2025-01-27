@@ -76,15 +76,22 @@ export const Shop = observer(() => {
                         </Container>
                     </Col>
                     <Col xs={12} sm={9}>
-                        <TransitionGroup className="product-list">
-                            {product.products.rows && product.products.rows.map((object) => (
-                                <CSSTransition key={object.id} timeout={500} classNames="product">
-                                    <Col className="d-flex justify-content-center">
-                                        <ProductCard properts={object} />
-                                    </Col>
-                                </CSSTransition>
-                            ))}
-                        </TransitionGroup>
+                        <div className="row"> {/* Div para suportar o sistema de grades */}
+                            <TransitionGroup component={null}>
+                                {product.products.rows && product.products.rows.map((object) => (
+                                    <CSSTransition key={object.id} timeout={500} classNames="product">
+                                        <Col
+                                            xs={12} // 1 card por linha no telemóvel
+                                            sm={6}  // 2 cards por linha em dispositivos médios
+                                            lg={4}  // 3 cards por linha em desktops
+                                            className="d-flex justify-content-center mb-4"
+                                        >
+                                            <ProductCard properts={object} />
+                                        </Col>
+                                    </CSSTransition>
+                                ))}
+                            </TransitionGroup>
+                        </div>
                     </Col>
                 </Row>
             </Container>
