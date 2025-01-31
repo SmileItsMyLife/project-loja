@@ -18,7 +18,9 @@ export const Shop = observer(() => {
     const [data, setData] = useState({
         typeId: 0,
         page: 1,
-        limit: 24
+        limit: 24,
+        sortedBy: "normal",
+        name: ""
     });
 
     const [totalPages, setTotalPages] = useState(1);
@@ -29,7 +31,7 @@ export const Shop = observer(() => {
                 product.setTypes(data);
             });
 
-            await fetchProducts(data.typeId, data.page, data.limit).then((data) => {
+            await fetchProducts(data.typeId, data.page, data.limit, data.sortedBy, data.name).then((data) => {
                 product.setProducts(data.products);
                 product.setTotalPages(data.totalPages);
                 setTotalPages(() => (data.totalPages > 1 ? data.totalPages : 1));
@@ -43,6 +45,14 @@ export const Shop = observer(() => {
             ...data,
             typeId: e.target.value,
             page: 1 // Resetar para a primeira página ao mudar de tipo
+        });
+    };
+
+    const handleSearchChange = (e) => {
+        const searchValue = e.target?.value || ""; // Prevents error if `e` is undefined
+        setData({
+            ...data,
+            name: searchValue
         });
     };
 
@@ -62,7 +72,7 @@ export const Shop = observer(() => {
                     <Col xs={12} sm={3} className='d-flex justify-content-center border-end'>
                         <Container>
                             <Form>
-                                <Search />
+                                <Search onChangeSearch={handleSearchChange} />
                                 <Form.Select className="my-3 shadow" onChange={handleTypeChange}>
                                     <option value={0}>Todos tipos</option>
                                     {product.types.map((type) => (

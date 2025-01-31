@@ -20,13 +20,14 @@ export const deleteProduct = async (id) => {
     return data;
 };
 
-export const fetchProducts = async (typeId, page, limit) => {
+export const fetchProducts = async (typeId, page, limit, sortedBy, name) => {
     try {
         const { data } = await $host.get('api/products', {
             params: {
-                typeId, page, limit
+                typeId, page, limit, sortedBy, name
             }
         });
+        console.log(data)
         return data;
     } catch (error) {
         // Trate o erro aqui

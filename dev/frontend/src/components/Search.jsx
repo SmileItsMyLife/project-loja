@@ -1,9 +1,8 @@
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
-export default function Search() {
+export default function Search({ onChangeSearch }) {
     return (
         <InputGroup className="mt-3 shadow">
             <Button className="custom-button" variant="outline-primary" id="button-addon1">
@@ -13,9 +12,10 @@ export default function Search() {
             </Button>
             <Form.Control
                 className="custom-input"
-                aria-label="Example text with button addon"
+                aria-label="Search"
                 aria-describedby="basic-addon1"
+                onChange={(e) => onChangeSearch(e)} // Capture input changes
             />
         </InputGroup>
-    )
+    );
 }

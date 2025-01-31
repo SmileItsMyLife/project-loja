@@ -3,6 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const { Product, BasketProduct } = require('../models/models')
 const ApiError = require('../error/ApiError');
+const {Op} = require('sequelize')
 
 class ProductController {
     async create(req, res, next) {
@@ -42,40 +43,47 @@ class ProductController {
 
     async getAll(req, res, next) {
         try {
-            // Extrai parâmetros da consulta (query)
-            let { typeId, limit, page } = req.query;
-
-            // Defina valores padrão para limit e page, caso não sejam fornecidos na consulta
-            page = page || 1;
-            limit = limit || 2;
-
-            // Converta os valores de limit e page para números inteiros
-            page = parseInt(page);
-            limit = parseInt(limit);
-
-            // Calcule o offset com base na página atual e no limite por página
-            let offset = page * limit - limit;
-
-            let products;
-
-            // Verifica se typeId foi fornecido
-            if (!typeId || typeId == 0) {
-                // Se typeId não estiver presente, encontre todos os produtos com limite e offset
-                products = await Product.findAndCountAll({ limit, offset });
-            } else {
-                // Se typeId estiver presente, encontre produtos com esse typeId, com limite e offset
-                products = await Product.findAndCountAll({ where: { typeId }, limit, offset });
+            let { typeId, limit, page, sortedBy, name } = req.query;
+    
+            // Definir valores padrão
+            page = parseInt(page) || 1;
+            limit = parseInt(limit) || 2;
+            let offset = (page - 1) * limit;
+    
+            let whereCondition = {};
+    
+            // Filtrar por `typeId`, se fornecido
+            if (typeId && typeId != 0) {
+                whereCondition.typeId = typeId;
             }
-
-            const allProducts = await Product.findAll()
-
-            const totalPages = Math.ceil(allProducts.length / limit);
-
-
-            // Retorna os produtos encontrados
-            return res.status(200).json({products, totalPages});
+    
+            // Filtrar por `name`, se fornecido (busca parcial, insensível a maiúsculas/minúsculas)
+            if (name) {
+                whereCondition.name = { [Op.like]: `%${name}%` };  // Use LIKE for MySQL
+            }
+    
+            // Definir ordenação
+            let order = [];
+            if (sortedBy === "oldest") {
+                order.push(["createdAt", "ASC"]);
+            } else if (sortedBy === "newest") {
+                order.push(["createdAt", "DESC"]);
+            } // Se for "normal", não adicionamos ordenação
+    
+            // Buscar produtos com filtros aplicados
+            const products = await Product.findAndCountAll({
+                where: whereCondition,
+                limit,
+                offset,
+                order,
+            });
+    
+            // Calcular total de páginas
+            const totalPages = Math.ceil(products.count / limit);
+    
+            return res.status(200).json({ products, totalPages });
         } catch (error) {
-            console.log(error.message)
+            console.error(error.message);
             return next(ApiError.internal("Erro ao buscar produtos"));
         }
     }
