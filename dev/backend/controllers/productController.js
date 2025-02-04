@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const { Product, BasketProduct } = require('../models/models')
 const ApiError = require('../error/ApiError');
-const {Op} = require('sequelize')
+const { Op, Sequelize } = require('sequelize')
 
 class ProductController {
     async create(req, res, next) {
@@ -44,24 +44,24 @@ class ProductController {
     async getAll(req, res, next) {
         try {
             let { typeId, limit, page, sortedBy, name } = req.query;
-    
+
             // Definir valores padrão
             page = parseInt(page) || 1;
             limit = parseInt(limit) || 2;
             let offset = (page - 1) * limit;
-    
+
             let whereCondition = {};
-    
+
             // Filtrar por `typeId`, se fornecido
             if (typeId && typeId != 0) {
                 whereCondition.typeId = typeId;
             }
-    
+
             // Filtrar por `name`, se fornecido (busca parcial, insensível a maiúsculas/minúsculas)
             if (name) {
                 whereCondition.name = { [Op.like]: `%${name}%` };  // Use LIKE for MySQL
             }
-    
+
             // Definir ordenação
             let order = [];
             if (sortedBy === "oldest") {
@@ -69,7 +69,7 @@ class ProductController {
             } else if (sortedBy === "newest") {
                 order.push(["createdAt", "DESC"]);
             } // Se for "normal", não adicionamos ordenação
-    
+
             // Buscar produtos com filtros aplicados
             const products = await Product.findAndCountAll({
                 where: whereCondition,
@@ -77,10 +77,10 @@ class ProductController {
                 offset,
                 order,
             });
-    
+
             // Calcular total de páginas
             const totalPages = Math.ceil(products.count / limit);
-    
+
             return res.status(200).json({ products, totalPages });
         } catch (error) {
             console.error(error.message);
@@ -170,7 +170,7 @@ class ProductController {
                 return next(ApiError.notFound(`O produto com ID: ${id} não foi encontrado`));
             }
 
-            await BasketProduct.destroy({where: {productId: product.id}})
+            await BasketProduct.destroy({ where: { productId: product.id } })
 
             const filePath = path.resolve(__dirname, '..', 'static', product.img);
 
@@ -188,6 +188,32 @@ class ProductController {
             return next(ApiError.internal("Erro ao excluir o produto"));
         }
     }
+
+    async recommends(req, res, next) {
+        try {
+            // Check total products count
+            const count = await Product.count();
+            console.log("Total products in DB:", count); // Debugging log
+
+            if (count === 0) {
+                return res.status(200).json([]); // Return an empty array if no products
+            }
+
+            const limit = count < 10 ? count : 10;
+
+            const products = await Product.findAll({
+                order: Sequelize.literal("RAND()"), // Use "RANDOM()" for PostgreSQL
+                limit,
+            });
+
+            console.log("Products retrieved:", products); // Debugging log
+            return res.status(200).json(products);
+        } catch (error) {
+            console.error("Error fetching products:", error.message);
+            return next(ApiError.internal("Erro ao obter recomendações de produtos"));
+        }
+    }
+
 }
 
 module.exports = new ProductController()
