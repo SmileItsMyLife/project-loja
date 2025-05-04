@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
-import { Context } from '../main';
+import { useStore } from '../main';
 import { observer } from 'mobx-react-lite';
 
 const AccountCard = observer(() => {
-    const { user, product } = useContext(Context)
+    const { user, product } = useStore()
 
     const handleLogout = () => {
         // Remover o token do armazenamento local

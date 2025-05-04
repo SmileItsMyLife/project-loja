@@ -2,11 +2,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { observer } from 'mobx-react-lite';
 import { useState, useContext, useEffect } from 'react';
 import { check } from './http/userAPI';
-import { Context } from './main';
+import { useStore } from './main';
 import { fetchBasket } from './http/basketAPI';
 import { Shop } from './pages/Shop';
 import { NavBar } from './components/NavBar';
-import "./style.scss"
+import "./style/style.scss"
 import SingleProduct from './pages/SingleProduct';
 import { Auth } from './pages/Auth';
 import Footer from './components/Footer';
@@ -19,7 +19,7 @@ import Canceled from './pages/Canceled';
 import PaymentDataForm from './components/PaymentDataForm';
 
 const App = observer(() => {
-    const { user, product } = useContext(Context);
+    const { user, product } = useStore();
     const [dataLoaded, setDataLoaded] = useState(false);
 
     useEffect(() => {

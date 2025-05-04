@@ -1,7 +1,7 @@
 import Pagination from 'react-bootstrap/Pagination';
 import Container from 'react-bootstrap/esm/Container';
 import { observer } from 'mobx-react-lite';
-import { Context } from '../main'; // importe o contexto necessário
+import { useStore } from '../main'; // importe o contexto necessário
 
 export default function ProductPagination() {
     return (

@@ -9,6 +9,7 @@ export default class ProductStore {
         this._totalCount = 0
         this._limit = 3
         this._totalPages = 1
+        this._recommneds = []
         makeAutoObservable(this)
     }
 
@@ -37,6 +38,14 @@ export default class ProductStore {
     }
     setTotalCount(count) {
         this._totalCount = count
+    }
+
+    setRecommends(products) {
+        this._recommneds = products
+    }
+
+    get recommends() {
+        return this._recommneds
     }
 
     get types() {

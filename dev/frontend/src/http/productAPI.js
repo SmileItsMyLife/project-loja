@@ -36,10 +36,13 @@ export const fetchProducts = async (typeId, page, limit, sortedBy, name) => {
     }
 };
 
-
-
 export const fetchOneProduct = async (id) => {
     const { data } = await $host.get('api/products/' + id)
+    return data
+}
+
+export const fetchRecommendsProduct = async () => {
+    const { data } = await $host.get('api/products/recommends/')
     return data
 }
 

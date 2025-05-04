@@ -2,7 +2,7 @@ import { CreateProduct } from '../components/modals/CreateProduct';
 import { CreateType } from '../components/modals/CreateType';
 import Container from 'react-bootstrap/Container';
 import { observer } from 'mobx-react-lite';
-import { Context } from '../main';
+import { useStore } from '../main';
 import Table from 'react-bootstrap/Table';
 import { deleteType, fetchTypes } from '../http/typeAPI';
 import { deleteProduct, fetchProducts } from '../http/productAPI';
@@ -11,7 +11,7 @@ import Form from 'react-bootstrap/Form';
 
 
 export const Admin = observer(() => {
-  const { product } = useContext(Context);
+  const { product } = useStore();
 
   const [data, setData] = useState({
     typeId: 0,

@@ -4,10 +4,10 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { observer } from 'mobx-react-lite';
 import { addType } from '../../http/typeAPI';
-import { Context } from '../../main';
+import { useStore } from '../../main';
 
 export const CreateType = observer(({ fetchData }) => {
-    const { type } = useContext(Context);
+    const { type } = useStore();
     const [show, setShow] = useState(false);
     const [name, setName] = useState("");
 

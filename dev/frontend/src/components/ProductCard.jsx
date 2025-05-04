@@ -1,15 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { addProduct, deleteProduct } from '../http/basketAPI';
 import { observer } from 'mobx-react-lite';
-import { Context } from '../main';
 import { fetchBasket } from '../http/basketAPI';
 import Modal from 'react-bootstrap/Modal';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useStore } from '../main';
+import StarRating from './StarRating';
 
 export const ProductCard = observer(({ properts }) => {
-  const { user, product } = useContext(Context);
+  const { user, product } = useStore();
   const navigate = useNavigate();
 
   const [showMessage, setShowMessage] = useState(false);
@@ -40,6 +41,7 @@ export const ProductCard = observer(({ properts }) => {
           <Card.Text>
             {properts.info}
           </Card.Text>
+          <StarRating maxStars={5} rating={4} readOnly={true} />
           {/* Buttons wrapped in a flex container */}
           <div className="d-flex justify-content-around">
             <Button className="" variant="primary" onClick={handleBuyClick}>Comprar</Button>

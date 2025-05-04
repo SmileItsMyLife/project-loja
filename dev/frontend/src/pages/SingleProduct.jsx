@@ -4,16 +4,17 @@ import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
 import Card from 'react-bootstrap/Card';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { fetchOneProduct } from '../http/productAPI';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { Context } from '../main';
+import { useStore } from '../main';
 import { addProduct, fetchBasket } from '../http/basketAPI';
-import { Link, useNavigate } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
+import StarRating from '../components/StarRating';
 
 const SingleProduct = observer(() => {
-    const { user, product } = useContext(Context)
+    const [userRating, setUserRating] = useState(0)
+    const { user, product } = useStore()
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const id = queryParams.get('id');
@@ -76,6 +77,7 @@ const SingleProduct = observer(() => {
                         <ListGroup.Item>Informação: {data.info}</ListGroup.Item>
                         <ListGroup.Item>Preço: {data.price} €</ListGroup.Item>
                         <ListGroup.Item>Tipo: {type.name}</ListGroup.Item>
+                        <StarRating maxStars={5} rating={userRating} onRatingChange={setUserRating} onlyRead={false}/>
                         <Button className='my-3' variant="primary" onClick={handleBuyClick}>Comprar</Button>
                         <Button className='' variant="primary" onClick={() => { navigate(`/`) }}>Voltar</Button>
                     </ListGroup>

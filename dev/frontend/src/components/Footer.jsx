@@ -1,5 +1,7 @@
 import React from 'react';
 import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 
 export default function Footer() {
   return (
@@ -44,69 +46,40 @@ export default function Footer() {
               </p>
             </MDBCol>
 
-            <MDBCol md="2" lg="2" xl="2" className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Produtos</h6>
+            <MDBCol md="4" lg="3" xl="3" className='mx-auto mb-md-0 mb-4'>
+              <h6 className='text-uppercase fw-bold mb-4'>Contactos</h6>
               <p>
-                <a href='#!' className='text-reset'>
-                  Roupa
-                </a>
+                <MDBIcon className="me-2" />
+                <i class="bi bi-house me-2"></i>
+                Portimão, 8500-511 LT 8A esq 3
               </p>
               <p>
-                <a href='#!' className='text-reset'>
-                  Material
-                </a>
+                <MDBIcon className="me-2" />
+                <i class="bi bi-envelope me-2"></i>
+                tricoshopportimao@gmail.com
               </p>
               <p>
-                <a href='#!' className='text-reset'>
-                  Instrumentos
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Brinhquedas
-                </a>
-              </p>
-            </MDBCol>
-
-            <MDBCol md="3" lg="2" xl="2" className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Links úteis</h6>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Amazon
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Trico Wiki
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Pedidos
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Ajuda
-                </a>
+                <MDBIcon className="me-2" /> 
+                <i className="bi bi-telephone me-2"></i>
+                +351 920 409 069
               </p>
             </MDBCol>
 
             <MDBCol md="4" lg="3" xl="3" className='mx-auto mb-md-0 mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Contactos</h6>
+              <h6 className='text-uppercase fw-bold mb-4'>Social Media</h6>
               <p>
-                <MDBIcon icon="home" className="me-2" />
-                Portimão, 8500-511 LT 8A esq 3
+                <MDBIcon className="me-2" />
+                <i className="bi bi-twitter-x"></i>
               </p>
+
               <p>
-                <MDBIcon icon="envelope" className="me-3" />
-                anickijandrij@gmail.com
+                <MDBIcon className="me-2" />
+                <i className="bi bi-whatsapp"></i>
               </p>
+
               <p>
-                <MDBIcon icon="phone" className="me-3" /> +351 920 409 069
-              </p>
-              <p>
-                <MDBIcon icon="print" className="me-3" /> +351 920 377 885
+                <MDBIcon className="me-2" />
+                <i className="bi bi-discord"></i>
               </p>
             </MDBCol>
           </MDBRow>
@@ -114,7 +87,7 @@ export default function Footer() {
       </section>
 
       <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-        © 2024 Copyright:
+        © 2025 Copyright:
       </div>
     </MDBFooter>
   );

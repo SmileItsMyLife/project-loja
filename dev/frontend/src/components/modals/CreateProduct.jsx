@@ -4,10 +4,10 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { observer } from 'mobx-react-lite';
 import { createProduct } from '../../http/productAPI';
-import { Context } from '../../main';
+import { useStore } from '../../main';
 
 export const CreateProduct = observer(({ fetchData }) => {
-    const { product } = useContext(Context)
+    const { product } = useStore()
     const [show, setShow] = useState(false);
     const [formData, setFormData] = useState({
         productName: '',

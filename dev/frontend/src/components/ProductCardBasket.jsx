@@ -2,12 +2,11 @@ import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { observer } from 'mobx-react-lite';
-import { Context } from '../main';
-import Modal from 'react-bootstrap/Modal';
+import { useStore } from '../main';
 import { deleteProduct, fetchBasket } from '../http/basketAPI';
 
 export const ProductCardBasket = observer(({ properts, id }) => {
-  const { product } = useContext(Context);
+  const { product } = useStore();
 
   const handleClose = () => setShowMessage(false);
 

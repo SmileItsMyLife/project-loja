@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Context } from '../main'; // importe o contexto necessário
+import { useStore } from '../main'; // importe o contexto necessário
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
@@ -9,7 +9,7 @@ import AccountCard from '../components/AccountCard';
 import { fetchBasket } from '../http/basketAPI';
 
 export const Basket = observer(() => {
-    const { user, product } = useContext(Context);
+    const { user, product } = useStore();
 
     const getBasket = async () => {
         const basketData = await fetchBasket();
