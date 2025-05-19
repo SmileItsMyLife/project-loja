@@ -50,16 +50,16 @@ export default function Footer() {
               <h6 className='text-uppercase fw-bold mb-4'>Contactos</h6>
               <p>
                 <MDBIcon className="me-2" />
-                <i class="bi bi-house me-2"></i>
+                <i className="bi bi-house me-2"></i>
                 Portimão, 8500-511 LT 8A esq 3
               </p>
               <p>
                 <MDBIcon className="me-2" />
-                <i class="bi bi-envelope me-2"></i>
+                <i className="bi bi-envelope me-2"></i>
                 tricoshopportimao@gmail.com
               </p>
               <p>
-                <MDBIcon className="me-2" /> 
+                <MDBIcon className="me-2" />
                 <i className="bi bi-telephone me-2"></i>
                 +351 920 409 069
               </p>
@@ -71,7 +71,6 @@ export default function Footer() {
                 <MDBIcon className="me-2" />
                 <i className="bi bi-twitter-x"></i>
               </p>
-
               <p>
                 <MDBIcon className="me-2" />
                 <i className="bi bi-whatsapp"></i>

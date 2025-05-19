@@ -7,7 +7,7 @@ import { fetchBasket } from '../http/basketAPI';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../main';
-import StarRating from './StarRating';
+import StarRating from './UI/StarRating';
 
 export const ProductCard = observer(({ properts }) => {
   const { user, product } = useStore();

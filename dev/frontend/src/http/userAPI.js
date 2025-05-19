@@ -1,4 +1,4 @@
-import { $authHost, $host } from "./index";
+import { $userHost, $userAuthHost } from "./index";
 import { jwtDecode } from "jwt-decode";
 
 // Função de registro de usuário
@@ -9,7 +9,7 @@ export const registration = async (email, password) => {
             throw new Error('Email and password are required');
         }
         // Envia uma solicitação POST para o endpoint de registro
-        const res = await $host.post('api/users/registration', { email, password });
+        const res = await $userHost.post('api/users/registration', { email, password });
         if (res.status === 200) {
             // Armazena o token JWT no localStorage
             localStorage.setItem('token', res.data.token);
@@ -42,10 +42,11 @@ export const login = async (email, password) => {
             throw new Error('Email and password are required');
         }
         // Envia uma solicitação POST para o endpoint de login
-        const { data } = await $host.post('api/users/login', { email, password });
-        // Armazena o token JWT no localStorage
-        localStorage.setItem('token', data.token);
-        return jwtDecode(data.token); // Retorna o token JWT decodificado
+        const { data } = await $userHost.post('api/users/login', { email, password }).then(response => {
+            localStorage.setItem('token', response.data.token);
+            console.log(response)
+            return jwtDecode(response.data.token);
+        });
     } catch (error) {
         // Trata erros
         if (error.response) {
@@ -68,7 +69,7 @@ export const login = async (email, password) => {
 export const check = async () => {
     try {
         // Envia uma solicitação GET para o endpoint de verificação de autenticação
-        const { data } = await $authHost.get('api/users/auth');
+        const { data } = await $userAuthHost.get('api/users/auth');
         // Armazena o token JWT no localStorage
         localStorage.setItem('token', data.token);
         return jwtDecode(data.token); // Retorna o token JWT decodificado

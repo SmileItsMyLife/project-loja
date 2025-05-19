@@ -1,6 +1,8 @@
 import { createContext, useContext } from 'react';
 import ReactDOM from 'react-dom/client'; // Import ReactDOM from 'react-dom/client'
-import App from './App.jsx';
+
+import {App} from './App.jsx';
+
 import UserStore from './store/UserStore.js';
 import ProductStore from './store/ProductStore.js';
 

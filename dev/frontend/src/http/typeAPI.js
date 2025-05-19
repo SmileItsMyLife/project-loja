@@ -11,6 +11,6 @@ export const deleteType = async (id) => {
 }
 
 export const fetchTypes = async () => {
-    const { data } = await $authHost.get('api/types')
+    const { data } = await $host.get('api/types')
     return data
 }

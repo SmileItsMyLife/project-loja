@@ -23,7 +23,7 @@ export const Shop = observer(() => {
     const [data, setData] = useState({
         typeId: 0,
         page: 1,
-        limit: 24,
+        limit: 3,
         sortedBy: "normal",
         name: ""
     });

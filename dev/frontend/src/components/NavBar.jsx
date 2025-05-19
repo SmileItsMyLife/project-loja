@@ -12,7 +12,7 @@ export const NavBar = observer(() => {
     return (
         <Navbar bg="primary" expand="lg" variant="dark">
             <Container>
-                <Navbar.Brand href="#home" style={{ fontWeight: "bold" }}>tricôshop</Navbar.Brand>
+                <Navbar.Brand href="/" style={{ fontWeight: "bold" }}>yanit</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">

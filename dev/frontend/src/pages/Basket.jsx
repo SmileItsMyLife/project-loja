@@ -1,11 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../main'; // importe o contexto necessário
+
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
-import { ProductCardBasket } from '../components/ProductCardBasket';
-import AccountCard from '../components/AccountCard';
+
+import { AccountCard } from '../components/AccountCard';
+
 import { fetchBasket } from '../http/basketAPI';
 
 export const Basket = observer(() => {
@@ -28,7 +30,8 @@ export const Basket = observer(() => {
 
                 <AccountCard />
                 <Container fluid>
-                    <Row xs={1} sm={2} md={3} lg={3} xl={4} className="justify-content-center">
+                    be soon
+                    {/* <Row xs={1} sm={2} md={3} lg={3} xl={4} className="justify-content-center">
                         {product.basket.productsInBasket && product.basket.productsInBasket.map((object, index) => {
                             console.log("Index:", index); // Adicione esta linha para depurar o valor de index
                             return (
@@ -37,7 +40,7 @@ export const Basket = observer(() => {
                                 </Col>
                             );
                         })}
-                    </Row>
+                    </Row> */}
                 </Container>
             </Container>
         </>

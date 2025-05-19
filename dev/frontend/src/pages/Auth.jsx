@@ -1,8 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useStore } from '../main'; // importe o contexto necessário
 import Container from 'react-bootstrap/esm/Container';
-import TabForm from '../components/TabForm';
+
+import { useStore } from '../main'; // importe o contexto necessário
+
+import { TabForm } from '../components/forms/TabForm';
 
 export const Auth = observer(() => {
     const userContext = useStore();

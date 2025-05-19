@@ -1,14 +1,17 @@
+import { useEffect, useState } from 'react';
+import Form from 'react-bootstrap/Form';
+import Table from 'react-bootstrap/Table';
+import { observer } from 'mobx-react-lite';
+
 import { CreateProduct } from '../components/modals/CreateProduct';
 import { CreateType } from '../components/modals/CreateType';
-import Container from 'react-bootstrap/Container';
-import { observer } from 'mobx-react-lite';
-import { useStore } from '../main';
-import Table from 'react-bootstrap/Table';
-import { deleteType, fetchTypes } from '../http/typeAPI';
-import { deleteProduct, fetchProducts } from '../http/productAPI';
-import { useContext, useEffect, useState, updateProduct } from 'react';
-import Form from 'react-bootstrap/Form';
 
+import Container from 'react-bootstrap/Container';
+
+import { useStore } from '../main';
+
+import { deleteType, fetchTypes } from '../http/typeAPI';
+import { deleteProduct, fetchProducts, updateProduct } from '../http/productAPI';
 
 export const Admin = observer(() => {
   const { product } = useStore();

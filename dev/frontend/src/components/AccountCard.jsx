@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useStore } from '../main';
 import { observer } from 'mobx-react-lite';
 
-const AccountCard = observer(() => {
+export const AccountCard = observer(() => {
     const { user, product } = useStore()
 
     const handleLogout = () => {
@@ -44,5 +44,3 @@ const AccountCard = observer(() => {
         </Card>
     );
 })
-
-export default AccountCard;

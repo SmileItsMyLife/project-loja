@@ -1,18 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { useStore } from '../main';
+
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
 import Card from 'react-bootstrap/Card';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { fetchOneProduct } from '../http/productAPI';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { useStore } from '../main';
-import { addProduct, fetchBasket } from '../http/basketAPI';
 import { Button, Modal } from 'react-bootstrap';
-import StarRating from '../components/StarRating';
 
-const SingleProduct = observer(() => {
+import { fetchOneProduct } from '../http/productAPI';
+import { addProduct, fetchBasket } from '../http/basketAPI';
+
+import StarRating from '../components/UI/StarRating';
+
+export const SingleProduct = observer(() => {
     const [userRating, setUserRating] = useState(0)
     const { user, product } = useStore()
     const location = useLocation();
@@ -96,6 +100,4 @@ const SingleProduct = observer(() => {
             </Modal>
         </Container>
     );
-});
-
-export default SingleProduct;
+}); 

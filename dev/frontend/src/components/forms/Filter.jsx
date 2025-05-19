@@ -24,7 +24,7 @@ export const Filter = observer(({ data, setData }) => {
         <Form>
             <Form.Select className="my-3 shadow" onChange={handleTypeChange}>
                 <option value={0}>Todos tipos</option>
-                {product.types.map((type) => (
+                {(Array.isArray(product.types) ? product.types : []).map((type) => (
                     <option key={type.id} value={type.id}>{type.name}</option>
                 ))}
             </Form.Select>
