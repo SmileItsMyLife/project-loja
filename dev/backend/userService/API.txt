@@ -1,0 +1,16 @@
+user API
+registration: {
+    email: string@hotmail.com
+    password: min8characters
+}
+login{
+    email: string
+    password: min8characters
+}
+check{
+    req.headers.authorization: token
+}
+verifyEmail{
+    req.query: token
+}
+

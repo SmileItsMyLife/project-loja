@@ -18,7 +18,7 @@ const start = async () => {
         await sequelize.sync()
         app.listen(PORT, () => console.log(`Servidor iniciado no port ${PORT}`))
     } catch (error) {
-        console.log(error.message)
+        console.log(`Error in connection to database oe in starting app! Error message:${error.message}`)
     }
 }
 

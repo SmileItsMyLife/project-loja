@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const ApiError = require('../error/ApiError');
 
 // Configuração do transporte do Nodemailer
 const transporter = nodemailer.createTransport({
@@ -23,6 +24,6 @@ module.exports = async function sendVerificationEmail(toEmail, verificationLink)
         console.log("E-mail enviado: ", info.messageId);
     } catch (error) {
         console.error("Erro ao enviar e-mail: ", error);
-        res.status(500).send("Erro ao enviar o e-mail.");
+        throw ApiError.internal("Erro no email service")
     }
 };
