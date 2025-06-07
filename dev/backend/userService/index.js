@@ -1,3 +1,8 @@
+process.on('SIGTERM', () => {
+    console.log('💡 SIGTERM received. Shutting down gracefully.');
+    process.exit(0);
+  });
+
 require("dotenv").config()
 const express = require('express')
 const cors = require('cors');
@@ -15,7 +20,13 @@ app.use("/api", router)
 const start = async () => {
     try {
         await sequelize.authenticate()
-        await sequelize.sync()
+        if (process.env.NODE_ENV === 'development') {
+            console.log('Running Sequelize sync with alter:true');
+        }
+
+        //If you need to update database by changing model, put "alter: true" below this line:
+        await sequelize.sync({ alter: true });
+
         app.listen(PORT, () => console.log(`Servidor iniciado no port ${PORT}`))
     } catch (error) {
         console.log(`Error in connection to database oe in starting app! Error message:${error.message}`)

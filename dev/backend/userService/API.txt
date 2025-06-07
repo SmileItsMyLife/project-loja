@@ -1,16 +1,19 @@
 user API
-registration: {
+
+registration - (POST) api/users/register {
     email: string@hotmail.com
     password: min8characters
 }
-login{
+
+login - (POST) api/users/login {
     email: string
     password: min8characters
 }
-check{
+
+check - (GET) api/users/check {
     req.headers.authorization: token
 }
-verifyEmail{
+
+verifyEmail - (GET) api/users/verify {
     req.query: token
 }
-

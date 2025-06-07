@@ -1,29 +1,16 @@
-const nodemailer = require('nodemailer');
+const axios = require('axios');
 const ApiError = require('../error/ApiError');
 
-// Configuração do transporte do Nodemailer
-const transporter = nodemailer.createTransport({
-    service: "gmail", // Pode ser alterado para outro serviço
-    auth: {
-        user: process.env.EMAIL_USER, // Seu e-mail (configurado no .env)
-        pass: process.env.EMAIL_PASS, // Sua senha ou senha de aplicativo
-    },
-});
-
-// Function to send a verification email
-module.exports = async function sendVerificationEmail(toEmail, verificationLink) {
+module.exports = async function sendVerificationEmail(email, verificationUrl) {
+    const mailServiceUrl = process.env.MAIL_SERVICE_URL || 'http://mail-service:4244/send-verification';
     try {
-        const mailOptions = {
-            from: process.env.EMAIL_USER, // Remetente
-            to: toEmail, 
-            subject: "Verificação de Conta",
-            text: `Prima o link para confirmar o seu email: ${verificationLink}`,
-        };
-
-        const info = await transporter.sendMail(mailOptions);
-        console.log("E-mail enviado: ", info.messageId);
+        const response = await axios.post(mailServiceUrl, {
+            toEmail: email,
+            verificationLink: verificationUrl
+        });
+        return response.data;
     } catch (error) {
-        console.error("Erro ao enviar e-mail: ", error);
-        throw ApiError.internal("Erro no email service")
+        console.error('Erro ao enviar email:', error.message);
+        throw ApiError.internal('Erro no email service');
     }
 };

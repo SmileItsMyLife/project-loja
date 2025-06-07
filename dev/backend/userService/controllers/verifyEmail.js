@@ -10,7 +10,7 @@ module.exports = async function verifyEmail(req, res, next) {
 
         const user = await User.findOne({ where: { verificationToken: token } });
         if (!user) {
-            return next(ApiError.notFound("Token inválido ou expirado."));
+            return next(ApiError.notFound("Token inválido."));
         }
 
         user.verified = true;

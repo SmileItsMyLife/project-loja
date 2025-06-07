@@ -1,20 +1,29 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const ApiError = require('../error/ApiError'); // Assuming you have a centralized error handler
 
 module.exports = function (req, res, next) {
     if (req.method === "OPTIONS") {
-        next()
+        return next();
     }
+
     try {
-        const token = req.headers.authorization.split(' ')[1] // Bearer asfasnfkajsfnjk
-        if (!token) {
-            console.log("Error 01")
-            return res.status(401).json({message: "Não autorizado (1)"})
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            console.error("Authorization header missing");
+            return next(ApiError.unauthorized("Não autorizado: Cabeçalho de autorização ausente."));
         }
-        const decoded = jwt.verify(token, process.env.SECRET_KEY)
-        req.user = decoded
-        next()
-    } catch (e) {
-        console.log(e.message)
-        return res.status(401).json({message: "Não autorizado (2) " + e.message})
+
+        const token = authHeader.split(' ')[1];
+        if (!token) {
+            console.error("Token missing in authorization header");
+            return next(ApiError.unauthorized("Não autorizado: Token ausente."));
+        }
+
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        req.user = decoded;
+        return next();
+    } catch (error) {
+        console.error("Error verifying token:", error.message);
+        return next(ApiError.unauthorized("Não autorizado: " + error.message));
     }
 };

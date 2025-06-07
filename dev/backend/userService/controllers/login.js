@@ -8,34 +8,30 @@ module.exports = async function login(req, res, next) {
     try {
         const { email, password } = req.body;
 
-        // Validação dos dados com Joi
         const schema = Joi.object({
             email: Joi.string().email().required(),
             password: Joi.string().min(6).required()
         });
+        
         const { error } = schema.validate({ email, password });
         if (error) {
             return next(ApiError.badRequest('Dados inválidos: ' + error.details[0].message));
         }
 
-        // Verifica se o utilizador existe
         const user = await User.findOne({ where: { email } });
         if (!user) {
             return next(ApiError.notFound('Utilizador não encontrado!'));
         }
 
-        // Verifica a palavra-passe
         const isPasswordValid = await bcrypt.compare(password, user.password);
+        
         if (!isPasswordValid) {
             return next(ApiError.badRequest('Palavra-passe incorreta!'));
         }
 
-        // (Opcional) Verifica se a conta foi verificada por email
         if (!user.verified) {
             return next(ApiError.forbidden('Conta ainda não verificada. Verifique seu email.'));
         }
-
-        // Gera JWT
         const token = generateJwt(user.id, user.email, user.role, user.verified);
 
         return res.status(200).json({

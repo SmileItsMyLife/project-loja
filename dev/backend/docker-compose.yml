@@ -1,0 +1,28 @@
+services:
+  user-service:
+    build:
+      context: userService
+      dockerfile: Dockerfile
+    container_name: user-service
+    working_dir: /app
+    volumes:
+      - ./userService:/app
+    ports:
+      - "4243:4243"
+    command: npm run test
+    env_file:
+      - ./userService/.env
+
+  mail-service:
+    build:
+      context: mailService
+      dockerfile: Dockerfile
+    container_name: mail-service
+    working_dir: /app
+    volumes:
+      - ./mailService:/app
+    ports:
+      - "4244:4244"
+    command: npm run test
+    env_file:
+      - ./mailService/.env
