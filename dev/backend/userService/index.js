@@ -8,7 +8,8 @@ const express = require('express')
 const cors = require('cors');
 const sequelize = require('./db')
 const fileUpload = require('express-fileupload')
-const router = require("./routes/index.js")
+const router = require("./routes/index.js");
+const deleteUserExpiredService = require("./services/deleteUserExpiredService.js");
 
 const PORT = process.env.PORT || 5001
 const app = express()
@@ -26,6 +27,8 @@ const start = async () => {
 
         //If you need to update database by changing model, put "alter: true" below this line:
         await sequelize.sync({ alter: true });
+
+        await deleteUserExpiredService()
 
         app.listen(PORT, () => console.log(`Servidor iniciado no port ${PORT}`))
     } catch (error) {
