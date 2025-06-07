@@ -26,7 +26,7 @@ const start = async () => {
         }
 
         //If you need to update database by changing model, put "alter: true" below this line:
-        await sequelize.sync({ alter: true });
+        await sequelize.sync({ alter: false });
 
         await deleteUserExpiredService()
 

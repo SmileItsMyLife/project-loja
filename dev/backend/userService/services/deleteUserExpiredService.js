@@ -1,32 +1,29 @@
 const { Op } = require('sequelize');
-const { User, Basket } = require('../models/models')
+const { User, Basket } = require('../models/models');
+const cron = require('node-cron');
 
 module.exports = async function deleteUserExpiredService() {
-    try {
-        const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
-        // Calcula o timestamp de 10 minutos atrás.
+    cron.schedule('*/10 * * * *', async () => {
+        try {
+            const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
 
-        await User.destroy({
-            where: {
-                verified: false, // Contas não verificadas
-                createdAt: { [Op.lt]: tenMinutesAgo } // Criadas há mais de 10 minutos
-            }
-        });
+            const deletedUsers = await User.destroy({
+                where: {
+                    verified: false, // Contas não verificadas
+                    createdAt: { [Op.lt]: tenMinutesAgo } // Criadas há mais de 10 minutos
+                }
+            });
 
-        await Basket.destroy({
-            where: {
-                userId: null // Cestas de compras sem usuário associado
-            }
-        });
+            const deletedBaskets = await Basket.destroy({
+                where: {
+                    userId: null // Cestas de compras sem usuário associado
+                }
+            });
 
-        // await models.BasketProduct.destroy({
-        //     where: {
-        //         basketId: null // Produtos sem cestas de compras associadas
-        //     }
-        // });
-
-        console.log('Unverified accounts older than 10 minutes have been deleted.');
-    } catch (error) {
-        console.error('Error deleting unverified accounts:', error);
-    }
+            console.log(`${deletedUsers} unverified accounts and ${deletedBaskets} orphaned baskets deleted.`);
+        } catch (error) {
+            console.error('Error deleting unverified accounts:', error);
+        }
+        console.log('Periodic cleanup executed.');
+    });
 }

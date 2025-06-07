@@ -9,9 +9,10 @@ services:
       - ./userService:/app
     ports:
       - "4243:4243"
-    command: npm run test
     env_file:
       - ./userService/.env
+    restart: always
+    command: ["pm2-runtime", "index.js"]
 
   mail-service:
     build:
@@ -23,6 +24,6 @@ services:
       - ./mailService:/app
     ports:
       - "4244:4244"
-    command: npm run test
     env_file:
       - ./mailService/.env
+    restart: always
