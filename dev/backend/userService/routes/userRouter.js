@@ -19,6 +19,6 @@ router.get('/verify', verifyEmail);
 router.get('/resend', authMiddleware, resendEmail) // Rota para verificação de usuários, chamando o método de verificação do controlador de usuários
 router.get('/ask-reset-password', askResetPassword); // Rota para solicitar redefinição de senha, chamando o método de solicitação de redefinição de senha do controlador de usuários
 router.put('/reset-password', resetPassword); // Rota para redefinir senha, chamando o método de redefinição de senha do controlador de usuários
-router.get('create-basket', createBasket);
+router.get('/create-basket', createBasket);
 
 module.exports = router;

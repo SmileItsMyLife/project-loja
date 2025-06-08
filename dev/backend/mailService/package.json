@@ -1,4 +1,6 @@
 {
+  "name": "mail-server",
+  "version": "1.2.0",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",

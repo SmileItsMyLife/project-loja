@@ -1,8 +1,3 @@
-process.on('SIGTERM', () => {
-    console.log('💡 SIGTERM received. Shutting down gracefully.');
-    process.exit(0);
-  });
-
 require("dotenv").config()
 const express = require('express')
 const cors = require('cors');
@@ -11,7 +6,7 @@ const fileUpload = require('express-fileupload')
 const router = require("./routes/index.js");
 const deleteUserExpiredService = require("./services/deleteUserExpiredService.js");
 
-const PORT = process.env.PORT || 5001
+const PORT = process.env.PORT || 4243
 const app = express()
 app.use(cors())
 app.use(fileUpload({}))
