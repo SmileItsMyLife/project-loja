@@ -1,53 +1,56 @@
 require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
+const { Kafka } = require("kafkajs");
 const sendVerificationEmail = require("./mail/sendVerificationEmail");
 const ApiError = require("./error/ApiError");
 
-const app = express();
-app.use(cors());
-app.use(express.json()); // parse JSON bodies
+const kafka_host_port = (process.env.NODE_ENV == "development" ? "localhost:9092" : process.env.KAFKA_BROKER) || "localhost:9092"; // Default to localhost if not set
+console.log("Kafka broker address:", kafka_host_port);
 
-const PORT = process.env.PORT || 4244;
-
-// Health-check endpoint
-app.get("/health", (req, res) => {
-  res.json({ status: "OK", service: "Email Service" });
+const kafka = new Kafka({
+  clientId: "mail-service",
+  brokers: [kafka_host_port], // Kafka broker address
 });
 
-/**
- * POST /send-verification
- * Body: { "toEmail": "user@example.com", "verificationLink": "https://…" }
- */
-app.post("/send-verification", async (req, res, next) => {
-    console.log(req.body)
-  const { toEmail, verificationLink } = req.body;
+const consumer = kafka.consumer({ groupId: "mail-service-group" });
 
-  // Basic input validation
-  if (!toEmail || !verificationLink) {
-    return next(ApiError.badRequest("Missing toEmail or verificationLink"));
-  }
-
+const run = async () => {
   try {
-    await sendVerificationEmail(toEmail, verificationLink);
-    return res.json({ success: true, message: "Email sent" });
+    // Connect the Kafka consumer
+    await consumer.connect();
+
+    // Subscribe to the "email-verification" topic
+    await consumer.subscribe({ topic: "mail", fromBeginning: false });
+
+    console.log("🚀 Kafka consumer connected and listening to 'mail' topic");
+
+    // Process each message
+    await consumer.run({
+      eachMessage: async ({ topic, partition, message }) => {
+        const req = JSON.parse(message.value.toString());
+        console.log(req)
+        try {
+          
+          const { email, verificationUrl } = JSON.parse(message.value.toString());
+
+          console.log(`📩 Received email request for: ${email}`);
+
+          // Validate the message
+          if (!email || !verificationUrl) {
+            throw ApiError.badRequest("Missing toEmail or verificationUrl");
+          }
+
+          // Send the email
+          await sendVerificationEmail(email, verificationUrl);
+          console.log(`✅ Email sent successfully to ${email}`);
+        } catch (err) {
+          console.error("❌ Error processing email message:", err.message);
+        }
+      },
+    });
   } catch (err) {
-    // If it’s an ApiError, forward it; otherwise wrap in a generic error
-    if (err instanceof ApiError) {
-      return next(err);
-    }
-    return next(ApiError.internal("Unexpected error sending email"));
+    console.error("❌ Failed to start Kafka consumer:", err.message);
+    process.exit(1);
   }
-});
+};
 
-// Centralized error handler
-app.use((err, req, res, next) => {
-  console.error("💥 API ERROR:", err);
-  const status = err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
-  res.status(status).json({ success: false, message });
-});
-
-app.listen(PORT, () => {
-  console.log(`🚀 Email Service listening on port ${PORT}`);
-});
+run();

@@ -13,6 +13,13 @@ app.use(fileUpload({}))
 app.use(express.json())
 app.use("/api", router)
 
+app.use((err, req, res, next) => {
+    console.error(err.stack); // Log the error stack trace for debugging
+    const status = err.status || 500; // Default to 500 if no status is set
+    const message = err.message || "Internal Server Error";
+    res.status(status).json({ message });
+});
+
 const start = async () => {
     try {
         await sequelize.authenticate()
@@ -21,13 +28,13 @@ const start = async () => {
         }
 
         //If you need to update database by changing model, put "alter: true" below this line:
-        await sequelize.sync({ alter: false });
+        await sequelize.sync({ alter: true });
 
         await deleteUserExpiredService()
 
         app.listen(PORT, () => console.log(`Servidor iniciado no port ${PORT}`))
     } catch (error) {
-        console.log(`Error in connection to database oe in starting app! Error message:${error.message}`)
+        console.log(`Error in connection to database in starting app! Error message:${error.message}`)
     }
 }
 
