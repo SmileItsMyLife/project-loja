@@ -22,8 +22,6 @@ const start = async () => {
         //If you need to update database by changing model, put "alter: true" below this line:
         await sequelize.sync({ alter: false });
 
-        await deleteUserExpiredService()
-
         app.listen(PORT, () => console.log(`Servidor iniciado no port ${PORT}`))
     } catch (error) {
         console.log(`Error in connection to database oe in starting app! Error message:${error.message}`)
