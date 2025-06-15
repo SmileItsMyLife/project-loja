@@ -12,7 +12,12 @@ services:
     env_file:
       - ./userService/.env
     restart: always
-    command: ["pm2-runtime", "index.js"]
+    command: [ "pm2-runtime", "index.js" ]
+    depends_on:
+      - mysql
+      - redis
+      - kafka
+      - zookeeper
 
   mail-service:
     build:
@@ -27,6 +32,12 @@ services:
     env_file:
       - ./mailService/.env
     restart: always
+    depends_on:
+      - mysql
+      - redis
+      - kafka
+      - zookeeper
+      - user-service
 
   product-service:
     build:
@@ -41,3 +52,70 @@ services:
     env_file:
       - ./productService/.env
     restart: always
+    depends_on:
+      - mysql
+      - redis
+      - kafka
+      - zookeeper
+
+  mysql:
+    image: mysql
+    container_name: mysql-server
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty123
+      MYSQL_DATABASE: mysql_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: [ "redis-server", "--timeout", "600", "--tcp-keepalive", "300" ]
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mysql_data:
+  kafka_data:
+  redis_data:
+  zookeeper_data:

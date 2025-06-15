@@ -3,15 +3,15 @@ const { Kafka } = require("kafkajs");
 const sendVerificationEmail = require("./mail/sendVerificationEmail");
 const ApiError = require("./error/ApiError");
 
-const kafka_host_port = (process.env.NODE_ENV == "development" ? "localhost:9092" : process.env.KAFKA_BROKER) || "localhost:9092"; // Default to localhost if not set
-console.log("Kafka broker address:", kafka_host_port);
+console.log("Kafka broker address:", process.env.KAFKA_BROKER);
 
 const kafka = new Kafka({
   clientId: "mail-service",
-  brokers: [kafka_host_port], // Kafka broker address
+  brokers: [process.env.KAFKA_BROKER], // Kafka broker address
 });
 
 const consumer = kafka.consumer({ groupId: "mail-service-group" });
+
 
 const run = async () => {
   try {

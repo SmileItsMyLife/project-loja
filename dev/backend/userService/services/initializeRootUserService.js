@@ -18,12 +18,14 @@ const initializeRootUser = async (req, res, next) => {
                 role: "ADMIN"
             })
             await Basket.create({ userId: new_root.id });
+            return next(res.status(200).json());
         }
 
         const root_basket = await Basket.findOne({ where: { userId: root.id } });
         
         if (!root_basket) {
             await Basket.create({ userId: root.id });
+            return next(res.status(200).json());
         }
 
     } catch (error) {

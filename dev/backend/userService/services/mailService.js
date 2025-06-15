@@ -1,11 +1,9 @@
 const { Kafka, Partitioners } = require('kafkajs');
 const ApiError = require('../error/ApiError');
 
-const kafka_host_port = (process.env.NODE_ENV == "development" ? "localhost:9092" : process.env.KAFKA_HOST) || 'localhost:9092';
-
 const kafka = new Kafka({
     clientId: 'user-service',
-    brokers: [kafka_host_port]
+    brokers: [process.env.KAFKA_BROKER], // Kafka broker address
 });
 
 const producer = kafka.producer({
