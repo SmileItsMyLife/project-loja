@@ -5,7 +5,7 @@ const ApiError = require('../error/ApiError');
 
 const deleteProduct = async (req, res, next) => {
     try {
-        const { id } = req.params;
+        const { id } = req.query;
 
         if (!id) {
             return next(ApiError.badRequest("O ID não foi indicado"));

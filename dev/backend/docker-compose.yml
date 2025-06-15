@@ -27,3 +27,17 @@ services:
     env_file:
       - ./mailService/.env
     restart: always
+
+  product-service:
+    build:
+      context: productService
+      dockerfile: Dockerfile
+    container_name: product-service
+    working_dir: /app
+    volumes:
+      - ./productService:/app
+    ports:
+      - "4245:4245"
+    env_file:
+      - ./productService/.env
+    restart: always

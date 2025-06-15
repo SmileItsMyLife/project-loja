@@ -1,5 +1,5 @@
-const {Type} = require('../models/models');
-const ApiError = require('../error/ApiError');
+const {Type} = require('../../main/models/models');
+const ApiError = require('../../main/error/ApiError');
 
 class TypeController {
     async create(req, res, next) {
@@ -12,7 +12,8 @@ class TypeController {
             const type = await Type.create({name});
             return res.json(type);
         } catch (error) {
-            next(error); // Pass the error to the error handling middleware
+            console.error(error.message) // Pass the error to the error handling middleware
+            throw ApiError.internal("Error creating type");
         }
     }
 

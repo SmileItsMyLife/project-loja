@@ -37,7 +37,7 @@ module.exports = async function registerUser(req, res, next) {
         }
 
         const verificationToken = uuid.v4();
-        const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS || '5');
+        const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS || '10');
         const hashPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
         const user = await User.create({

@@ -9,7 +9,7 @@ class ApiError extends Error{
         return new ApiError(400, message)
     }
 
-    static unAutorized(message) {
+    static unAuthorized(message) {
         return new ApiError(401, message)
     }
     

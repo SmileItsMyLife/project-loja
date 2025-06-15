@@ -1,4 +1,4 @@
-const ApiError = require("../../main/error/ApiError");
+const ApiError = require("../error/ApiError");
 const { Product } = require("../models/models");
 
 const getOneProduct = async (req, res, next) => {

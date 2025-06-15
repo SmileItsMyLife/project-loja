@@ -10,13 +10,13 @@ module.exports = function (req, res, next) {
         const authHeader = req.headers.authorization;
         if (!authHeader) {
             console.error("Authorization header missing");
-            return next(ApiError.unauthorized("Não autorizado: Cabeçalho de autorização ausente."));
+            return next(ApiError.unAuthorized("Não autorizado: Cabeçalho de autorização ausente."));
         }
 
         const token = authHeader.split(' ')[1];
         if (!token) {
             console.error("Token missing in authorization header");
-            return next(ApiError.unauthorized("Não autorizado: Token ausente."));
+            return next(ApiError.unAuthorized("Não autorizado: Token ausente."));
         }
 
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
@@ -24,6 +24,6 @@ module.exports = function (req, res, next) {
         return next();
     } catch (error) {
         console.error("Error verifying token:", error.message);
-        return next(ApiError.unauthorized("Não autorizado: " + error.message));
+        return next(ApiError.unAuthorized("Não autorizado: " + error.message));
     }
 };

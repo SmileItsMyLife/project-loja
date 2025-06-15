@@ -11,9 +11,28 @@ login - (POST) api/users/login {
 }
 
 check - (GET) api/users/check {
+    authHost
     req.headers.authorization: token
 }
 
 verifyEmail - (GET) api/users/verify {
     req.query: token
+}
+
+askResetPassword - (GET) api/user/ask-reset-password {
+    req.query: email
+}
+
+resetPassword - (PUT) api/users/reset-pssword {
+    req.body: email, token (fro page /new-password?=token)
+}
+
+resendEmail - (GET) api/user/resend {
+    authHost
+    req.headers.authorization: token
+}
+
+createBasket - (GET) api/user/resend {
+    authHost
+    req.headers.authorization: token
 }

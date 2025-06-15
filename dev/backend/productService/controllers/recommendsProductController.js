@@ -1,5 +1,5 @@
-const { Product } = require("../../models");
-const ApiError = require("../../error/ApiError");
+const { Product } = require("../models/models");
+const ApiError = require("../error/ApiError");
 const Sequelize = require("sequelize");
 
 const recommends = async (req, res, next) => {
