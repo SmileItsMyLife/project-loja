@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { User } = require('../userService/models/models');
 
 module.exports = function(role) {
     return function (req, res, next) {
@@ -11,7 +12,8 @@ module.exports = function(role) {
                 return res.status(401).json({message: "Não autorizado"})
             }
             const decoded = jwt.verify(token, process.env.SECRET_KEY)
-            if (decoded.role !== role) {
+            const user = User.findOne({ where: { id: decoded.id, email: decoded.email } });
+            if (user.role !== role) {
                 return res.status(403).json({message: "Não tem permissão"})
             }
             req.user = decoded;

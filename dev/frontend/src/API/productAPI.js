@@ -1,28 +1,28 @@
-import { $authHost, $host } from "./index";
+import { $productAuthHost, $productHost } from "./index";
 
 export const createType = async (type) => {
-    const { data } = await $authHost.post('api/type', type)
+    const { data } = await $productAuthHost.post('api/type/create', type)
     return data
 }
 
 export const fetchTypes = async () => {
-    const { data } = await $host.get('api/types')
+    const { data } = await $productHost.get('api/types/all')
     return data
 }
 
 export const createProduct = async (product) => {
-    const { data } = await $authHost.post('api/products', product);
+    const { data } = await $productAuthHost.post('api/products', product);
     return data;
 };
 
 export const deleteProduct = async (id) => {
-    const { data } = await $authHost.delete('api/products/' + id);
+    const { data } = await $productAuthHost.delete('api/products/' + id);
     return data;
 };
 
 export const fetchProducts = async (typeId, page, limit, sortedBy, name) => {
     try {
-        const { data } = await $host.get('api/products', {
+        const { data } = await $productHost.get('api/products/all', {
             params: {
                 typeId, page, limit, sortedBy, name
             }
@@ -37,18 +37,18 @@ export const fetchProducts = async (typeId, page, limit, sortedBy, name) => {
 };
 
 export const fetchOneProduct = async (id) => {
-    const { data } = await $host.get('api/products/' + id)
+    const { data } = await $productHost.get('api/products/' + id)
     return data
 }
 
 export const fetchRecommendsProduct = async () => {
-    const { data } = await $host.get('api/products/recommends/')
+    const { data } = await $productHost.get('api/products/recommends')
     return data
 }
 
 export const updateProduct = async (productPatch) => {
     try {
-      const { data } = await $authHost.put('api/products/', productPatch);
+      const { data } = await $productAuthHost.put('api/products/', productPatch);
       console.log('Produto atualizado com sucesso:', data);
       return data;
     } catch (error) {

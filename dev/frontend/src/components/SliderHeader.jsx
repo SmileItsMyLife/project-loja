@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useEffect } from 'react';
-import { fetchRecommendsProduct } from '../http/productAPI';
+import { fetchRecommendsProduct } from '../services/productAPI';
 import { useStore } from '../main';
 
 export const SliderHeader = observer(() => {

@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { observer } from 'mobx-react-lite';
-import { createProduct } from '../../http/productAPI';
+import { createProduct } from '../../services/productAPI';
 import { useStore } from '../../main';
 
 export const CreateProduct = observer(({ fetchData }) => {

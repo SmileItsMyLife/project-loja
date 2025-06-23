@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { observer } from 'mobx-react-lite';
-import { addType } from '../../http/typeAPI';
+import { addType } from '../../services/typeAPI';
 import { useStore } from '../../main';
 
 export const CreateType = observer(({ fetchData }) => {

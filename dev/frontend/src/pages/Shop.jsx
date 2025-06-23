@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 
 import { useStore } from '../main';
-import { fetchProducts, fetchTypes } from '../http/productAPI';
+import { fetchProducts, fetchTypes } from '../services/productAPI';
 
 import { ProductCard } from '../components/ProductCard';
 import Search from '../components/Search';

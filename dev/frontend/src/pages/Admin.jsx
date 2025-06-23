@@ -10,8 +10,8 @@ import Container from 'react-bootstrap/Container';
 
 import { useStore } from '../main';
 
-import { deleteType, fetchTypes } from '../http/typeAPI';
-import { deleteProduct, fetchProducts, updateProduct } from '../http/productAPI';
+import { deleteType, fetchTypes } from '../services/typeAPI';
+import { deleteProduct, fetchProducts, updateProduct } from '../services/productAPI';
 
 export const Admin = observer(() => {
   const { product } = useStore();

@@ -1,9 +1,6 @@
 import { $userHost, $userAuthHost } from './index';
 import { jwtDecode } from 'jwt-decode';
 
-/**
- * Centraliza o tratamento de erros HTTP.
- */
 const handleError = (error) => {
     if (error.response) {
         console.error('Error response status:', error.response.status);
@@ -19,11 +16,12 @@ const handleError = (error) => {
 
 export const registration = async (email, password) => {
     try {
+        
         if (!email || !password) throw new Error('Email and password are required');
 
         const response = await $userHost.post('api/users/registration', { email, password });
-        localStorage.setItem('token', response.data.token);
-        return jwtDecode(response.data.token);
+
+        return response.data.token;
     } catch (error) {
         return handleError(error);
     }
@@ -43,7 +41,7 @@ export const login = async (email, password) => {
 
 export const check = async () => {
     try {
-        const response = await $userAuthHost.get('api/users/auth');
+        const response = await $userAuthHost.get('api/users/check');
         localStorage.setItem('token', response.data.token);
         return jwtDecode(response.data.token);
     } catch (error) {

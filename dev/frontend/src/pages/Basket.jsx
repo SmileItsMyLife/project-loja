@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/esm/Col';
 
 import { AccountCard } from '../components/AccountCard';
 
-import { fetchBasket } from '../http/basketAPI';
+import { fetchBasket } from '../services/basketAPI';
 
 export const Basket = observer(() => {
     const { user, product } = useStore();

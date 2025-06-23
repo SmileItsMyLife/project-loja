@@ -1,4 +1,4 @@
-import { $authHost, $host } from "./index";
+import { $authHost, } from "./index";
 
 export const addProduct = async (productId) => {
     const { data } = await $authHost.post('api/basket-products', {productId})

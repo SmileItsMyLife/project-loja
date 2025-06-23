@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { addProduct, deleteProduct } from '../http/basketAPI';
+import { addProduct, deleteProduct } from '../services/basketAPI';
 import { observer } from 'mobx-react-lite';
-import { fetchBasket } from '../http/basketAPI';
+import { fetchBasket } from '../services/basketAPI';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../main';

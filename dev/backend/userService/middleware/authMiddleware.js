@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const ApiError = require('../error/ApiError'); // Assuming you have a centralized error handler
+const { User } = require('../models/models');
 
-module.exports = function (req, res, next) {
+module.exports = async function (req, res, next) {
     if (req.method === "OPTIONS") {
         return next();
     }
@@ -20,8 +21,16 @@ module.exports = function (req, res, next) {
         }
 
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        req.user = decoded;
-        return next();
+        
+
+        const user = await User.findOne({ where: { id: decoded.id, email: decoded.email } });
+        if (!user) {
+            console.error("User not found");
+            return next(ApiError.unauthorized("Não autorizado: Usuário não encontrado."));
+        } else {
+            req.user = decoded;
+            return next();
+        }
     } catch (error) {
         console.error("Error verifying token:", error.message);
         return next(ApiError.unauthorized("Não autorizado: " + error.message));

@@ -11,8 +11,8 @@ import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Button, Modal } from 'react-bootstrap';
 
-import { fetchOneProduct } from '../http/productAPI';
-import { addProduct, fetchBasket } from '../http/basketAPI';
+import { fetchOneProduct } from '../services/productAPI';
+import { addProduct, fetchBasket } from '../services/basketAPI';
 
 import StarRating from '../components/UI/StarRating';
 

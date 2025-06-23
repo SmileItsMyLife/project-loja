@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/esm/Container';
-import { login } from '../../http/userAPI';
+import { login } from '../../services/userAPI';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import zxcvbn from "zxcvbn";

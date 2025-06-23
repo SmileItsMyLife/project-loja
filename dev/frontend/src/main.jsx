@@ -1,25 +1,21 @@
-import { createContext, useContext } from 'react';
-import ReactDOM from 'react-dom/client'; // Import ReactDOM from 'react-dom/client'
-
-import {App} from './App.jsx';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { App } from './App.jsx';
 
 import UserStore from './store/UserStore.js';
 import ProductStore from './store/ProductStore.js';
+import StoreContext from './store/storeContext.js';
 
-// Criação de um contexto com valor inicial null
-export const StoreContext = createContext(null);
+// Initialize stores once
+const store = {
+  user: new UserStore(),
+  product: new ProductStore(),
+};
 
-export const useStore = () => useContext(StoreContext);
-
-// Renderização do componente raiz usando ReactDOM.createRoot() apenas uma vez
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <>
-    {/* O Context.Provider envolve o componente App para fornecer os valores user, product e email */}
-    <StoreContext.Provider value={{
-      user: new UserStore(),
-      product: new ProductStore(),
-    }}>
+  <React.StrictMode>
+    <StoreContext.Provider value={store}>
       <App />
     </StoreContext.Provider>
-  </>
+  </React.StrictMode>
 );
