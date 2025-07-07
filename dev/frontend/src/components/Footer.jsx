@@ -1,12 +1,11 @@
-import React from 'react';
 import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
 import "bootstrap-icons/font/bootstrap-icons.css";
-
+import "../style/Footer.scss";
 
 export default function Footer() {
   return (
     <MDBFooter bgColor='light' className='text-center text-lg-start text-muted'>
-      <section style={{ backgroundColor: '#000000' }} className='d-flex justify-content-center justify-content-lg-between p-4 border-bottom shadow'>
+      <section className='d-flex justify-content-center justify-content-lg-between p-4 border-bottom shadow footer-top-line'>
         <div className='me-5 d-none d-lg-block'>
           <span></span>
         </div>

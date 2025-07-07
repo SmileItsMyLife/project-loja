@@ -11,28 +11,27 @@ module.exports = async function (req, res, next) {
         const authHeader = req.headers.authorization;
         if (!authHeader) {
             console.error("Authorization header missing");
-            return next(ApiError.unauthorized("Não autorizado: Cabeçalho de autorização ausente."));
+            return next(ApiError.unAutorized("Não autorizado: Cabeçalho de autorização ausente."));
         }
 
         const token = authHeader.split(' ')[1];
         if (!token) {
             console.error("Token missing in authorization header");
-            return next(ApiError.unauthorized("Não autorizado: Token ausente."));
+            return next(ApiError.unAutorized("Não autorizado: Token ausente."));
         }
 
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        
 
         const user = await User.findOne({ where: { id: decoded.id, email: decoded.email } });
         if (!user) {
             console.error("User not found");
-            return next(ApiError.unauthorized("Não autorizado: Usuário não encontrado."));
+            return next(ApiError.unAutorized("Não autorizado: Usuário não encontrado."));
         } else {
             req.user = decoded;
             return next();
         }
     } catch (error) {
         console.error("Error verifying token:", error.message);
-        return next(ApiError.unauthorized("Não autorizado: " + error.message));
+        return next(ApiError.unAutorized("Não autorizado: " + error.message));
     }
 };

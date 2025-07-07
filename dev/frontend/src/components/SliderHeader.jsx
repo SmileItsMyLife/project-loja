@@ -2,27 +2,10 @@ import { observer } from 'mobx-react-lite';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useEffect } from 'react';
-import { fetchRecommendsProduct } from '../services/productAPI';
-import { useStore } from '../main';
+import { useStore } from '../hooks/useStore';
 
 export const SliderHeader = observer(() => {
     const { product } = useStore()
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                await fetchRecommendsProduct().then((data) => {
-                    product.setRecommends(data)
-                });
-            } catch (error) {
-                console.error("Error fetching recommended products:", error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
 
     const settings = {
         dots: false,
@@ -52,8 +35,10 @@ export const SliderHeader = observer(() => {
             },
         ],
     };
-    
-    return (
+    if (!product.recommends || product.recommends.length === 0) {
+        return null;
+    } else {
+        return (
         <>
             <Slider  {...settings}>
                 {product.recommends.map((product) => (
@@ -72,5 +57,5 @@ export const SliderHeader = observer(() => {
                 ))}
             </Slider>
         </>
-    )
+    )}
 })

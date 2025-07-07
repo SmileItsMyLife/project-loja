@@ -1,9 +1,15 @@
 import { observer } from "mobx-react-lite";
 import Form from 'react-bootstrap/Form';
-import { useStore } from "../../main";
+import { useType } from "../../hooks/useTypes";
+import { useEffect } from "react";
 
 export const Filter = observer(({ data, setData }) => {
-    const { product } = useStore();
+    const { getAndStoreTypes, type } = useType();
+
+    useEffect(() => {
+        getAndStoreTypes();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleTypeChange = (e) => {
         setData({
@@ -24,7 +30,7 @@ export const Filter = observer(({ data, setData }) => {
         <Form>
             <Form.Select className="my-3 shadow" onChange={handleTypeChange}>
                 <option value={0}>Todos tipos</option>
-                {(Array.isArray(product.types) ? product.types : []).map((type) => (
+                {(Array.isArray(type.types) ? type.types : []).map((type) => (
                     <option key={type.id} value={type.id}>{type.name}</option>
                 ))}
             </Form.Select>

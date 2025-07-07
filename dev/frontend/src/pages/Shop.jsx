@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -6,44 +5,21 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 
-import { useStore } from '../main';
-import { fetchProducts, fetchTypes } from '../services/productAPI';
-
 import { ProductCard } from '../components/ProductCard';
 import Search from '../components/Search';
 import { SliderHeader } from '../components/SliderHeader';
 import { Pagination } from '../components/Pagination';
 import { Filter } from '../components/forms/Filter';
 
-import '../style/Shop.css'; // Importar arquivo CSS
+import '../style/Shop.css';
+import image404 from '../assets/images/image404.jpg';
+import { useProduct } from '../hooks/useProducts';
 
 export const Shop = observer(() => {
-    const { product } = useStore();
-
-    const [data, setData] = useState({
-        typeId: 0,
-        page: 1,
-        limit: 3,
-        sortedBy: "normal",
-        name: ""
-    });
-
-    useEffect(() => {
-        const fetchData = async () => {
-            await fetchTypes().then((data) => {
-                product.setTypes(data);
-            });
-
-            await fetchProducts(data.typeId, data.page, data.limit, data.sortedBy, data.name).then((data) => {
-                product.setProducts(data.products);
-                product.setTotalPages(data.totalPages);
-            });
-        };
-        fetchData();
-    }, [data]);
+    const { data, setData, product } = useProduct();
 
     const handleSearchChange = (e) => {
-        const searchValue = e.target?.value || ""; // Prevents error if `e` is undefined
+        const searchValue = e.target?.value || "";
         setData({
             ...data,
             name: searchValue
@@ -68,21 +44,50 @@ export const Shop = observer(() => {
                         </Container>
                     </Col>
                     <Col xs={12} sm={9} className='border-top'>
+
                         <div className="row"> {/* Div para suportar o sistema de grades */}
-                            <TransitionGroup component={null}>
-                                {product.products.rows && product.products.rows.map((object) => (
-                                    <CSSTransition key={object.id} timeout={500} classNames="product">
-                                        <Col
-                                            xs={12} // 1 card por linha no telemóvel
-                                            sm={6}  // 2 cards por linha em dispositivos médios
-                                            lg={4}  // 3 cards por linha em desktops
-                                            className="d-flex justify-content-center mb-4"
-                                        >
-                                            <ProductCard properts={object} />
-                                        </Col>
-                                    </CSSTransition>
-                                ))}
-                            </TransitionGroup>
+                            {product.products.count === 0 ? (
+                                <div
+                                    className="w-100 text-center py-5"
+                                    style={{
+                                        background: "#fff",
+                                        borderRadius: 16,
+                                        boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        minHeight: 320,
+                                    }}
+                                >
+                                    <img
+                                        src={image404}
+                                        alt="No products found"
+                                        style={{ maxWidth: 180, marginBottom: 24 }}
+                                    />
+                                    <h4 style={{ color: "#333", fontWeight: 600, marginBottom: 8 }}>
+                                        Oops... We havent products for you at the moment...
+                                    </h4>
+                                    <p style={{ color: "#888", fontSize: 16 }}>
+                                        Try adjusting your filters or check back later!
+                                    </p>
+                                </div>
+                            ) : (
+                                <TransitionGroup component={null}>
+                                    {product.products.rows && product.products.rows.map((object) => (
+                                        <CSSTransition key={object.id} timeout={500} classNames="product">
+                                            <Col
+                                                xs={12}
+                                                sm={6}
+                                                lg={4}
+                                                className="d-flex justify-content-center mb-4"
+                                            >
+                                                <ProductCard properts={object} />
+                                            </Col>
+                                        </CSSTransition>
+                                    ))}
+                                </TransitionGroup>
+                            )}
                         </div>
                         <Pagination data={data} setData={setData} />
                     </Col>

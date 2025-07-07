@@ -1,41 +1,58 @@
-import {useState, useEffect} from 'react';
-import { check } from '../API/userAPI';
-import { useStore } from '../store/storeContext';
+import { useState, useEffect } from 'react';
+import { checkAuthUser } from '../API/userAPI';
+import { useStore } from './useStore';
+import { setUserContext, setUserContextDefault } from '../utils/contextSetData';
 
 export const useAuth = () => {
 
-    const [isAuth, setIsAuth] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const { user } = useStore();
+    const [data, setData] = useState({
+        isAuth: false,
+        loading: true,
+        error: null
+    })
+
+    const { user, product } = useStore();
 
     useEffect(() => {
-        const checkAuth = async () => {
+        const checkAuthAndStoreData = async () => {
             try {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    const checkUserData = await check();
-                    if (typeof checkUserData === 'number') {
-                        setError(checkUserData)
-                        return setIsAuth(false);
-                    } else {
-                        console.log(checkUserData);
-                        user.setIsAuth(true);  
-                        return setIsAuth(true);
-                    }
+                if (localStorage.getItem('token')) {
+                    const checkUserData = await checkAuthUser();
+
+                    localStorage.setItem('token', checkUserData.data.token);
+
+                    setUserContext(checkUserData.data.token, user);
+                    setData({
+                        ...data,
+                        isAuth: true
+                    });
+
                 } else {
-                    setIsAuth(false);
+                    
+                    setUserContextDefault(user, product);
+                    setData({
+                        ...data,
+                        isAuth: true
+                    });
                 }
             } catch (error) {
                 console.error('Error checking authentication:', error);
-                setIsAuth(false);
+
+                setData({
+                    ...data,
+                    error: error,
+                    isAuth: true
+                });
+
             } finally {
-                setLoading(false);
+                setData({
+                    ...data,
+                    loading: false
+                });
             }
         };
-
-        checkAuth();
-    });
-
-    return {isAuth, loading, error};
+        checkAuthAndStoreData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return data;
 }

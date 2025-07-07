@@ -1,8 +1,7 @@
-import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
-import { useStore } from '../main';
+import { useStore } from '../hooks/useStore';
 import { observer } from 'mobx-react-lite';
 
 export const AccountCard = observer(() => {

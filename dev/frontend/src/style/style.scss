@@ -1,5 +1,9 @@
 // Define custom variables before importing Bootstrap
-$primary: #000000;
+$primary: #143E4C;
+$secondary: #C0BB46;
+$white: #FFFFFF;
+$black: #000000;
+$gray: #525252;
 
 // Import Bootstrap styles
 @import "node_modules/bootstrap/scss/bootstrap";

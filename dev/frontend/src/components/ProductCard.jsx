@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { addProduct, deleteProduct } from '../services/basketAPI';
+import { addProduct, /*deleteProduct */} from '../API/basketAPI';
 import { observer } from 'mobx-react-lite';
-import { fetchBasket } from '../services/basketAPI';
+import { fetchBasket } from '../API/basketAPI';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
-import { useStore } from '../main';
+
 import StarRating from './UI/StarRating';
+import { useStore } from '../hooks/useStore';
 
 export const ProductCard = observer(({ properts }) => {
   const { user, product } = useStore();

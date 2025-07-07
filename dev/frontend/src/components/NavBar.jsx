@@ -3,11 +3,10 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, useLocation } from 'react-router-dom';
-import { useStore } from '../store/storeContext';
+import { useStore } from '../hooks/useStore';
  
 export const NavBar = observer(() => {
     const { user, product } = useStore();
-    console.log("NavBar", user, product);
     const location = useLocation();
 
     return (

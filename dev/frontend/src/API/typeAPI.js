@@ -1,16 +1,13 @@
-import { $authHost, $host } from "./index";
+import { $typeAuthHost, $typeHost } from "./index";
 
-export const addType = async (nameType) => {
-    const { data } = await $authHost.post('api/types', nameType)
-    return data
+export const addType = async (typeName) => {
+    return await $typeAuthHost.post('api/types', typeName);
 }
 
 export const deleteType = async (id) => {
-    const { data } = await $authHost.delete('api/types?id=' + id)
-    return data
+    return await $typeAuthHost.delete('api/types?id=' + id);
 }
 
 export const fetchTypes = async () => {
-    const { data } = await $host.get('api/types')
-    return data
+    return await $typeHost.get('api/types/all');
 }

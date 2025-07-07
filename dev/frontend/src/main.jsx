@@ -4,12 +4,14 @@ import { App } from './App.jsx';
 
 import UserStore from './store/UserStore.js';
 import ProductStore from './store/ProductStore.js';
-import StoreContext from './store/storeContext.js';
+import StoreContext from './hooks/useStore.js';
+import TypeStore from './store/TypeStore.js';
 
 // Initialize stores once
 const store = {
   user: new UserStore(),
   product: new ProductStore(),
+  type: new TypeStore()
 };
 
 ReactDOM.createRoot(document.getElementById('root')).render(
