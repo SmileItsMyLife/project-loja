@@ -2,7 +2,7 @@ const { User, Basket } = require("../models/models");
 const ApiError = require("../error/ApiError");
 const bcrypt = require("bcrypt");
 
-const initializeRootUser = async (req, res, next) => {
+const initializeRootUser = async (req, res) => {
 
     try {
 
@@ -17,21 +17,17 @@ const initializeRootUser = async (req, res, next) => {
                 verified: true,
                 role: "ADMIN"
             })
-            await Basket.create({ userId: new_root.id });
-            return next(res.status(200).json());
+            return await Basket.create({ userId: new_root.id });
         }
 
         const root_basket = await Basket.findOne({ where: { userId: root.id } });
         
         if (!root_basket) {
-            await Basket.create({ userId: root.id });
-            return next(res.status(200).json());
+            return await Basket.create({ userId: root.id });
         }
 
     } catch (error) {
-
-        console.error("Error initializing root user:", error.message);
-        return next(ApiError.internal("Erro ao inicializar o usuário root"));
+        return console.error("Error initializing root user:", error.message);
     
     }
 }

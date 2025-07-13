@@ -46,13 +46,13 @@ export const Shop = observer(() => {
                     <Col xs={12} sm={9} className='border-top'>
 
                         <div className="row"> {/* Div para suportar o sistema de grades */}
-                            {product.products.count === 0 ? (
+                            {!product.products.count ? (
                                 <div
                                     className="w-100 text-center py-5"
                                     style={{
                                         background: "#fff",
                                         borderRadius: 16,
-                                        boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
+                                        boxShadow: "0 2px 16px rgba(8, 3, 3, 0.07)",
                                         display: "flex",
                                         flexDirection: "column",
                                         alignItems: "center",

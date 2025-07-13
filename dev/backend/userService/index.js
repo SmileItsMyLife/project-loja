@@ -6,7 +6,8 @@ const fileUpload = require('express-fileupload')
 const router = require("./routes/index.js");
 
 const initializeRootUser = require("./services/initializeRootUserService");
-const deleteUserExpiredService = require('./services/deleteUserExpiredService')
+const deleteUserExpiredService = require('./services/deleteUserExpiredService');
+const sendVerificationEmail = require('./services/mailService');
 
 const PORT = process.env.PORT || 4243
 const app = express()
@@ -32,6 +33,8 @@ const start = async () => {
         await sequelize.sync({ alter: false });
 
         await initializeRootUser();
+
+        await sendVerificationEmail("test@yanit.com", "Teste de email de verificação");
 
         await deleteUserExpiredService();
 

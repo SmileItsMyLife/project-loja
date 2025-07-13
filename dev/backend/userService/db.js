@@ -1,6 +1,7 @@
 const {Sequelize} = require('sequelize')
 
-const db_host = (process.env.NODE_ENV == "development" ? "localhost" : process.env.DB_HOST) || 'localhost'; 
+const env = process.env.NODE_ENV || 'development';
+const db_host = env == "development" ? "localhost" : process.env.DB_HOST;
 
 module.exports = new Sequelize(
     process.env.DB_NAME,
@@ -15,5 +16,3 @@ module.exports = new Sequelize(
         }
     }
 )
-
-console.log(db_host)

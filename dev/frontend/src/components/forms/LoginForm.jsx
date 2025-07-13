@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useLogin } from '../../hooks/useLogin';
-import { emailCheckFormat, passwordCheckFormat } from '../../utils/checkFormat';
+import { emailCheckFormat } from '../../utils/checkFormat';
 import { EyeIcon, EyeSlashIcon } from '../../utils/icons.jsx';
 
 import Col from 'react-bootstrap/Col';
@@ -12,7 +12,6 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-
 const LoginForm = observer(() => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,7 +20,7 @@ const LoginForm = observer(() => {
         passwordValide: { isValide: true, messageValidation: "" }
     });
     const [showPassword, setShowPassword] = useState(false);
-    const { login } = useLogin();
+    const { loginAndAuth } = useLogin();
 
     useEffect(() => {
         const checkEmail = (email) => {
@@ -39,30 +38,12 @@ const LoginForm = observer(() => {
                 return false
             }
         }
-
-        const checkPassword = (password) => {
-            if (passwordCheckFormat(password)) {
-                setDataFormatValidation({
-                    ...dataFormatValidation,
-                    passwordValide: { isValide: true, messageValidation: "" }
-                });
-                return true
-            } else {
-                setDataFormatValidation({
-                    ...dataFormatValidation,
-                    passwordValide: { isValide: false, messageValidation: "The password format wrong!" }
-                });
-                return false
-            }
-        }
         checkEmail(email);
-        checkPassword(password);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [email, password]);
+    }, [email]);
 
     const handlerSubmit = async (e) => {
         e.preventDefault();
-        const result = await login(email, password);
+        const result = await loginAndAuth(email, password);
         if (result.success) {
             alert("Login successful!");
         } else {

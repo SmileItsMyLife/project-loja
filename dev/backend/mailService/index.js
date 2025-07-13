@@ -3,11 +3,14 @@ const { Kafka } = require("kafkajs");
 const sendVerificationEmail = require("./mail/sendVerificationEmail");
 const ApiError = require("./error/ApiError");
 
-console.log("Kafka broker address:", process.env.KAFKA_BROKER);
+const env = process.env.NODE_ENV || 'development';
+const brokerIP = env !== 'development' ? process.env.KAFKA_BROKER : 'localhost:9092';
+
+console.log(`🚀 Starting Kafka consumer for mail service on ${brokerIP}`);
 
 const kafka = new Kafka({
   clientId: "mail-service",
-  brokers: [process.env.KAFKA_BROKER], // Kafka broker address
+  brokers: [brokerIP], // Kafka broker address
 });
 
 const consumer = kafka.consumer({ groupId: "mail-service-group" });
