@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const getBaseUrl = (port) => `http://localhost:${port}`;
+const getBaseUrl = (port) => `http://127.0.0.1:${port}`;
 const createApi = (port) => axios.create({ baseURL: getBaseUrl(port) });
 
 const $host = createApi(4242);

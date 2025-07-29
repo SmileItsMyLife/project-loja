@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { Product, BasketProduct } = require('../models/models');
 const ApiError = require('../error/ApiError');
+const { clearRedisProducts } = require('../utils/clearRedisProducts');
 
 const deleteProduct = async (req, res, next) => {
     try {
@@ -30,6 +31,8 @@ const deleteProduct = async (req, res, next) => {
         }
 
         await product.destroy();
+
+        await clearRedisProducts();
 
         return res.status(200).json({ message: "Produto apagado com sucesso" });
     } catch (error) {

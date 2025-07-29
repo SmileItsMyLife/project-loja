@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../models/models');
 
 module.exports = function (role) {
-    return function (req, res, next) {
+    return async function (req, res, next) {
         if (req.method === "OPTIONS") {
             next()
         }
@@ -12,7 +12,7 @@ module.exports = function (role) {
                 return res.status(401).json({ message: "Não autorizado" })
             }
             const decoded = jwt.verify(token, process.env.SECRET_KEY)
-            const user = User.findOne({
+            const user = await User.findOne({
                 where: {
                     id: decoded.id
                 }

@@ -34,7 +34,7 @@ export const ProductCard = observer(({ properts }) => {
       <Card style={{ width: '18rem', height: '28rem' }} className="m-3 shadow">
         <Card.Img
           variant="top"
-          src={`http://localhost:4242/${properts.img}`}
+          src={`http://127.0.0.1:4245/${properts.img}`}
           style={{ minHeight: '50%', maxHeight: '50%', objectFit: 'cover' }}
         />
         <Card.Body className="d-flex flex-column justify-content-between">

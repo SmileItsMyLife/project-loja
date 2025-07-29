@@ -4,12 +4,14 @@ const cors = require('cors');
 const sequelize = require('./db.js')
 const fileUpload = require('express-fileupload')
 const router = require("./routes/index.js");
+const path = require('path');
 
 const PORT = process.env.PORT || 4245
 const app = express()
 app.use(cors())
 app.use(fileUpload({}))
 app.use(express.json())
+app.use(express.static(path.resolve(__dirname, "static")))
 app.use("/api", router)
 
 const start = async () => {
@@ -20,9 +22,9 @@ const start = async () => {
         }
 
         //If you need to update database by changing model, put "alter: true" below this line:
-        await sequelize.sync({ alter: false });
+        await sequelize.sync({ alter: true });
 
-        app.listen(PORT, () => console.log(`Servidor iniciado no port ${PORT}`))
+        app.listen(PORT, "0.0.0.0", () => console.log(`Servidor iniciado no port ${PORT}`))
     } catch (error) {
         console.log(`Error in connection to database oe in starting app! Error message:${error.message}`)
     }

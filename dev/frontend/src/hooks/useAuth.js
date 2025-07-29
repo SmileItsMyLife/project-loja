@@ -22,33 +22,37 @@ export const useAuth = () => {
                     localStorage.setItem('token', checkUserData.data.token);
 
                     setUserContext(checkUserData.data.token, user);
-                    setData({
-                        ...data,
+                    setData(prev => ({
+                        ...prev,
                         isAuth: true
-                    });
+                    }));
+
+                    console.log(1)
 
                 } else {
-                    
+
                     setUserContextDefault(user, product);
-                    setData({
-                        ...data,
-                        isAuth: true
-                    });
+                    setData(prev => ({
+                        ...prev,
+                        isAuth: false
+                    }));
+
+                    console.log(2)
                 }
             } catch (error) {
                 console.error('Error checking authentication:', error);
 
-                setData({
-                    ...data,
+                setData(prev => ({
+                    ...prev,
                     error: error,
-                    isAuth: true
-                });
+                    isAuth: false
+                }));
 
             } finally {
-                setData({
-                    ...data,
+                setData(prev => ({
+                    ...prev,
                     loading: false
-                });
+                }));
             }
         };
         checkAuthAndStoreData();

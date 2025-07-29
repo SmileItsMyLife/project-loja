@@ -1,7 +1,7 @@
 import { $productAuthHost, $productHost } from "./index";
 
 export const createProduct = async (product) => {
-    const { data } = await $productAuthHost.post('api/products', product);
+    const { data } = await $productAuthHost.post('api/products/create', product);
     return data;
 };
 
@@ -24,7 +24,7 @@ export const fetchRecommendsProduct = async () => {
     return await $productHost.get('api/products/recommends')
 }
 
-export const updateProduct = async (productPatch) => {
-    return await $productAuthHost.put('api/products/', productPatch);
+export const updateProduct = async (updatedProduct) => {
+    return await $productAuthHost.put('api/products/update', updatedProduct);
 };
 

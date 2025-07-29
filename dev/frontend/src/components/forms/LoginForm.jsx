@@ -25,16 +25,16 @@ const LoginForm = observer(() => {
     useEffect(() => {
         const checkEmail = (email) => {
             if (emailCheckFormat(email)) {
-                setDataFormatValidation({
-                    ...dataFormatValidation,
+                setDataFormatValidation((prev) => ({
+                    ...prev,
                     emailValide: { isValide: true, messageValidation: "" }
-                });
+                }));
                 return true
             } else {
-                setDataFormatValidation({
-                    ...dataFormatValidation,
+                setDataFormatValidation((prev) => ({
+                    ...prev,
                     emailValide: { isValide: false, messageValidation: "Wrong email format!" }
-                });
+                }));
                 return false
             }
         }

@@ -2,6 +2,7 @@
   "name": "mail-server",
   "version": "1.2.0",
   "dependencies": {
+    "amqplib": "^0.10.8",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",

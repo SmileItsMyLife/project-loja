@@ -1,6 +1,7 @@
 const Redis = require('ioredis');
 
-const redis_host = (process.env.NODE_ENV === "development" ? "0.0.0.0" : process.env.REDIS_HOST) || '0.0.0.0';
+const env = process.env.NODE_ENV || 'development';
+const redis_host = (env === "development" ? "localhost" : process.env.REDIS_HOST);
 
 const redis = new Redis({
   host: redis_host,

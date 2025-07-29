@@ -38,7 +38,7 @@ const start = async () => {
 
         await deleteUserExpiredService();
 
-        app.listen(PORT, () => console.log(`Servidor iniciado no port ${PORT}`))
+        app.listen(PORT, "0.0.0.0", () => console.log(`Servidor iniciado no port ${PORT}`))
     } catch (error) {
         console.log(`Error in connection to database in starting app! Error message:${error.message}`)
     }

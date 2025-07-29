@@ -7,7 +7,6 @@ import Container from 'react-bootstrap/Container';
 
 import { ProductCard } from '../components/ProductCard';
 import Search from '../components/Search';
-import { SliderHeader } from '../components/SliderHeader';
 import { Pagination } from '../components/Pagination';
 import { Filter } from '../components/forms/Filter';
 
@@ -28,13 +27,6 @@ export const Shop = observer(() => {
 
     return (
         <>
-            <Container fluid>
-                <Row>
-                    <Col>
-                        <SliderHeader />
-                    </Col>
-                </Row>
-            </Container>
             <Container fluid>
                 <Row xs={1} sm={2}>
                     <Col xs={12} sm={3} className='d-flex justify-content-center border-end border-top'>

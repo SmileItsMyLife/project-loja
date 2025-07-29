@@ -1,11 +1,13 @@
 const { Product } = require('../models/models');
-const ApiError = require('../../main/error/ApiError');
+const ApiError = require('../error/ApiError');
 const fs = require('fs');
 const path = require('path');
 const uuid = require('uuid');
+const { clearRedisProducts } = require('../utils/clearRedisProducts');
 
 const updateProduct = async (req, res, next) => {
     try {
+        console.log("Updating product with data:", req.body);
         const { id, name, price, info, typeId } = req.body;
 
         // Find the product by ID
@@ -47,7 +49,7 @@ const updateProduct = async (req, res, next) => {
 
         // Delete unused files in the static folder
         deleteUnusedFiles();
-
+        await clearRedisProducts();
         // Return a success response
         return res.status(200).json({ message: "Produto foi atualizado com sucesso!" });
     } catch (error) {

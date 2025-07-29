@@ -1,12 +1,14 @@
+import { useEffect } from 'react';
 import { deleteType, fetchTypes } from '../API/typeAPI';
 import { useStore } from './useStore';
 
 export function useType() {
     const { type } = useStore();
 
-    const getAndStoreTypes = async () => {
+    const refreshTypes = async () => {
         try {
             const dataTypes = await fetchTypes();
+            console.log('Fetched types:', dataTypes);
             type.setTypes(dataTypes);
             return { success: true };
         } catch (error) {
@@ -20,7 +22,7 @@ export function useType() {
         if (response instanceof Error) {
             return { success: false, error: response };
         } else {
-            await getAndStoreTypes();
+            await refreshTypes();
             return { success: true };
         }
     };
@@ -30,13 +32,28 @@ export function useType() {
         if (response instanceof Error) {
             return { success: false, error: response };
         } else {
-            await getAndStoreTypes();
+            await refreshTypes();
             return { success: true };
         }
     };
 
+    useEffect(() => {
+        const getAndStoreTypes = async () => {
+            try {
+                const dataTypes = await fetchTypes();
+                type.setTypes(dataTypes.data);
+                console.log('Fetched types:', dataTypes);
+                return { success: true };
+            } catch (error) {
+                console.error('Error fetching types:', error);
+                return { success: false, error };
+            }
+        };
+        getAndStoreTypes();
+    }, []);
+
     return {
-        getAndStoreTypes,
+        refreshTypes,
         createAndRefreshType,
         removeAndRefreshType,
         type
