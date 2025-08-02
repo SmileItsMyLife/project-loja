@@ -23,6 +23,13 @@ export const Admin = observer(() => {
     typeId: ''
   });
 
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [updateStatus, setUpdateStatus] = useState({
+    success: null,
+    message: '',
+    statusCode: null,
+  });
+
   const handleCreateInputChange = (field, value) => {
     setNewProduct(prev => ({ ...prev, [field]: value }));
   };
@@ -89,20 +96,30 @@ export const Admin = observer(() => {
     formData.append('name', updates.name ?? rowData.name);
     formData.append('info', updates.info ?? rowData.info);
     formData.append('price', updates.price ?? rowData.price);
+    formData.append('typeId', updates.typeId ?? rowData.typeId);
 
     if (images[rowData.id]) {
       formData.append('img', images[rowData.id]);
     }
 
     const res = await updateProductById(formData);
+
     if (res.success) {
-      console.log('Updated:', res.response);
+      setUpdateStatus({
+        success: true,
+        message: 'Produto atualizado com sucesso!',
+        statusCode: 200,
+      });
+      setShowStatusModal(true); // ✅ ADD THIS LINE
     } else {
-      console.error('Update error:', res.error);
-      alert('Failed to update product');
+      setUpdateStatus({
+        success: false,
+        message: 'Erro ao atualizar o produto: ' + res.error,
+        statusCode: res.statusCode || 500,
+      });
+      setShowStatusModal(true);
     }
   };
-
 
   // Delete product handler
   const handleDelete = async (e, id) => {
@@ -132,6 +149,7 @@ export const Admin = observer(() => {
             <th>Image</th>
             <th>Upload</th>
             <th>Info</th>
+            <th>Type</th>
             <th>Price</th>
             <th>Update</th>
             <th>Delete</th>
@@ -183,6 +201,20 @@ export const Admin = observer(() => {
                     style={{ width: '200px' }}
                   />
                 </div>
+              </td>
+
+              <td className="text-center align-middle">
+                <Form.Select
+                  value={editingRows[row.id]?.typeId ?? row.typeId}
+                  onChange={(e) => handleInputChange(row.id, 'typeId', e.target.value)}
+                  style={{ width: '150px' }}
+                >
+                  {type.types.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.name}
+                    </option>
+                  ))}
+                </Form.Select>
               </td>
 
               <td className="text-center align-middle">
@@ -292,6 +324,23 @@ export const Admin = observer(() => {
           </Form>
         </Modal.Body>
       </Modal>
+
+      <Modal show={showStatusModal} onHide={() => setShowStatusModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {updateStatus.success ? '✅ Atualização Bem-Sucedida' : '❌ Falha na Atualização'}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p><strong>Status:</strong> {updateStatus.statusCode}</p>
+          <p>{updateStatus.message}</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowStatusModal(false)}>
+            OK
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
-  );
-});
+  )
+})

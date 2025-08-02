@@ -15,12 +15,12 @@ import image404 from '../assets/images/image404.jpg';
 import { useProduct } from '../hooks/useProducts';
 
 export const Shop = observer(() => {
-    const { data, setData, product } = useProduct();
+    const { productFilter, setProductFilter, product } = useProduct();
 
     const handleSearchChange = (e) => {
         const searchValue = e.target?.value || "";
-        setData({
-            ...data,
+        setProductFilter({
+            ...productFilter,
             name: searchValue
         });
     };
@@ -32,7 +32,7 @@ export const Shop = observer(() => {
                     <Col xs={12} sm={3} className='d-flex justify-content-center border-end border-top'>
                         <Container>
                             <Search onChangeSearch={handleSearchChange} />
-                            <Filter data={data} setData={setData} />
+                            <Filter data={productFilter} setData={setProductFilter} />
                         </Container>
                     </Col>
                     <Col xs={12} sm={9} className='border-top'>
@@ -81,7 +81,7 @@ export const Shop = observer(() => {
                                 </TransitionGroup>
                             )}
                         </div>
-                        <Pagination data={data} setData={setData} />
+                        <Pagination data={productFilter} setData={setProductFilter} />
                     </Col>
                 </Row>
             </Container>

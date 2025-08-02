@@ -1,15 +1,9 @@
 import { observer } from "mobx-react-lite";
 import Form from 'react-bootstrap/Form';
 import { useType } from "../../hooks/useTypes";
-import { useEffect } from "react";
 
 export const Filter = observer(({ data, setData }) => {
-    const { getAndStoreTypes, type } = useType();
-
-    useEffect(() => {
-        getAndStoreTypes();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const { type } = useType();
 
     const handleTypeChange = (e) => {
         setData({
@@ -28,17 +22,27 @@ export const Filter = observer(({ data, setData }) => {
     };
     return (
         <Form>
-            <Form.Select className="my-3 shadow" onChange={handleTypeChange}>
+            <Form.Select
+                className="my-3 shadow"
+                onChange={handleTypeChange}
+                value={data.typeId ?? 0}
+            >
                 <option value={0}>Todos tipos</option>
-                {(Array.isArray(type.types) ? type.types : []).map((type) => (
+                {type.types.map((type) => (
                     <option key={type.id} value={type.id}>{type.name}</option>
                 ))}
             </Form.Select>
-            <Form.Select className="my-3 shadow" onChange={handleSortedByChange}>
+
+            <Form.Select
+                className="my-3 shadow"
+                onChange={handleSortedByChange}
+                value={data.sortedBy ?? ''}
+            >
                 <option value={""}>Sem filtro</option>
                 <option value={"newest"}>Mais novos</option>
                 <option value={"oldest"}>Mais velhos</option>
             </Form.Select>
+
         </Form>
     )
 })
