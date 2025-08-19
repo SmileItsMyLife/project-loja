@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { deleteType, fetchTypes } from '../API/typeAPI';
+import { deleteType, fetchTypes, addType } from '../API/typeAPI';
 import { useStore } from './useStore';
 
 export function useType() {
@@ -9,7 +9,7 @@ export function useType() {
         try {
             const dataTypes = await fetchTypes();
             console.log('Fetched types:', dataTypes);
-            type.setTypes(dataTypes);
+            type.setTypes(dataTypes.data);
             return { success: true };
         } catch (error) {
             console.error('Error fetching types:', error);
@@ -18,7 +18,7 @@ export function useType() {
     };
 
     const createAndRefreshType = async (typeName) => {
-        const response = await type.addType(typeName);
+        const response = await addType(typeName);
         if (response instanceof Error) {
             return { success: false, error: response };
         } else {

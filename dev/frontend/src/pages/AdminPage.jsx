@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useProduct } from '../hooks/useProducts';
 import { useType } from '../hooks/useTypes';
 import { Button } from 'react-bootstrap';
+import TypeTable from '../components/tables/TypeTable';
 
 import ProductTable from '../components/tables/ProductTable';
 import CreateProductModal from '../components/modals/CreateProductModal';
@@ -10,7 +11,7 @@ import StatusModal from '../components/modals/StatusModal';
 
 const AdminPage = observer(() => {
   const { product, updateProductById, deleteProductById, saveProduct } = useProduct();
-  const { type } = useType();
+  const { type, createAndRefreshType, removeAndRefreshType } = useType();
 
   const [editingRows, setEditingRows] = useState({});
   const [images, setImages] = useState({});
@@ -41,6 +42,12 @@ const AdminPage = observer(() => {
         setShowStatusModal={setShowStatusModal}
       />
 
+      <TypeTable
+        types={type.types}
+        deleteTypeById={removeAndRefreshType}
+        createType={createAndRefreshType}
+      />
+        
       <CreateProductModal
         show={showCreateModal}
         onHide={() => setShowCreateModal(false)}
