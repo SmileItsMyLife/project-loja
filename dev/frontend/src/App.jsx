@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
 import { Shop } from './pages/Shop';
-import { Admin } from './pages/Admin';
+import AdminPage from './pages/AdminPage';
 /* import { Basket } from './pages/Basket';
  */import { Auth } from './pages/Auth';
 /* import { SingleProduct } from './pages/SingleProduct'; */
@@ -26,7 +26,7 @@ export const App = observer(() => {
                 <Route path="/auth" element={<Auth />} />
 {/*                 <Route path="/basket" element={<Basket />} /> */}
                 <Route path="/account" element={<Account />} />
-                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin" element={<AdminPage />} />
             </Routes>
             <Footer />
         </Router>

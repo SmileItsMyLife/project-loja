@@ -6,7 +6,7 @@ export const createProduct = async (product) => {
 };
 
 export const deleteProduct = async (id) => {
-    const { data } = await $productAuthHost.delete('api/products/' + id);
+    const { data } = await $productAuthHost.delete('api/products/delete/?id=' + id);
     return data;
 };
 
